@@ -1,5 +1,6 @@
-package database;
+package api;
 
+import database.BaseXClient;
 import org.basex.BaseXServer;
 import org.json.simple.JSONObject;
 import util.Response;
@@ -11,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "ServletGetBaseXStatus")
-public class ServletGetBaseXStatus extends HttpServlet {
+@WebServlet(name = "GetBaseXStatus")
+public class GetBaseXStatus extends HttpServlet {
 
     private static BaseXServer server;
 
