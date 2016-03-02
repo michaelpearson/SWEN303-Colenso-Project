@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="SWEN303-Colenso-Project:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/SWEN303_Colenso_Project_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="SWEN303-Colenso-Project/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="SWEN303-Colenso-Project" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
