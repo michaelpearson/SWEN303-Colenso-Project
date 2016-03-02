@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
     <servlet>
-        <servlet-name>ServletTest</servlet-name>
-        <servlet-class>ServletTest</servlet-class>
+        <servlet-name>DatabaseStatus</servlet-name>
+        <servlet-class>database.ServletGetBaseXStatus</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ServletTest</servlet-name>
-        <url-pattern>/test</url-pattern>
+        <servlet-name>DatabaseStatus</servlet-name>
+        <url-pattern>/api/status</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>SearchDocuments</servlet-name>
+        <servlet-class>api.SearchDocumentsDocuments</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SearchDocuments</servlet-name>
+        <url-pattern>/api/search</url-pattern>
+    </servlet-mapping>
+
 </web-app>

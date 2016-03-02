@@ -17,3 +17,7 @@ bin/
 out/
 
 !lib/*
+
+workspace.xml
+
+configuration.json
