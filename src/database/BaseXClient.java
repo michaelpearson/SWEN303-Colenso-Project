@@ -75,7 +75,7 @@ public final class BaseXClient {
                 ServerConfiguration.getConfigurationInt("database", "port"),
                 ServerConfiguration.getConfigurationString("database", "username"),
                 ServerConfiguration.getConfigurationString("database", "password"));
-        client.preparedQuery("OPEN %s", ServerConfiguration.getConfigurationString("database", "name"));
+        client.preparedCommand("OPEN %s", ServerConfiguration.getConfigurationString("database", "name"));
         return client;
     }
 
@@ -112,10 +112,22 @@ public final class BaseXClient {
      * @return the results of the query
      * @throws IOException
      */
-    public String preparedQuery(String queryString, Object...arguments) throws IOException {
+    public String preparedCommand(String queryString, Object...arguments) throws IOException {
         String query = String.format(queryString, arguments);
         System.out.println("Executing: " + query);
         return execute(query);
+    }
+
+    /**
+     *
+     * @param queryString command
+     * @param arguments arguments to insert into the query string
+     * @return the results of the query
+     * @throws IOException
+     */
+    public Query preparedQuery(String queryString, Object...arguments) throws IOException {
+        String query = String.format(queryString, arguments);
+        return query(query);
     }
 
     /**

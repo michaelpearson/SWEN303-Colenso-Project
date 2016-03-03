@@ -4,33 +4,64 @@
         <meta charset="UTF-8">
         <title>Test</title>
         <script src="assets/lib/jquery-2.2.1.js"></script>
-        <script type="application/javascript">
+        <script src="/assets/js/api.js"></script>
+        <script>
             $(function () {
-                $.ajax("/api/search", {
-                    data : {
-                        type : "",
-                        query : ""
-                    },
-                    success : function (documents) {
-                        documents = documents.documents || [];
-                        var tableBody = $('#document-list-body');
-                        tableBody.empty();
-                        for(var a = 0;a < documents.length;a++) {
-                            var doc = $('<tr></tr>');
-                            var title = $('<td>');
-                            title.append("<a href=\"/documents/view.html#" + documents[a].id + "\">" + documents[a].title + "</a>");
-                            var date = $('<td>');
-                            date.text(documents[a].date);
-                            doc.append(title);
-                            doc.append(date);
-                            tableBody.append(doc);
-                        }
+                function updateDocuments(documents) {
+                    documents = documents.documents || [];
+                    var tableBody = $('#document-list-body');
+                    tableBody.empty();
+                    for(var a = 0;a < documents.length;a++) {
+                        var doc = $('<tr></tr>');
+                        var title = $('<td>');
+                        title.append("<a href=\"/documents/view.html#" + documents[a].id + "\">" + documents[a].title + "</a>");
+                        var date = $('<td>');
+                        date.text(documents[a].date);
+                        doc.append(title);
+                        doc.append(date);
+                        tableBody.append(doc);
+                    }
+                }
+                $('#search-button').click(function () {
+                    var old = window.location.hash;
+                    var hash = JSON.stringify({
+                        type : $('#search-type').val(),
+                        query : $('#search-query').val()
+                    });
+                    window.location.hash = hash;
+                    if(old == window.location.hash) {
+                        $(window).trigger('hashchange');
                     }
                 });
+
+                $(window).bind('hashchange', function() {
+                    try {
+                        var search = {};
+                        if (window.location.hash.replace(/^#/, '') != "") {
+                            search = JSON.parse(window.location.hash.replace(/^#/, ''));
+                            $('#search-type').val(search.type);
+                            $('#search-query').val(search.query);
+                        }
+                        searchDocument(search.type || "", search.query || "", updateDocuments);
+                    } catch (e) {
+                        window.location.hash = "";
+                    }
+                }).trigger('hashchange');
             });
         </script>
     </head>
     <body>
+        <div id="search-box">
+            <textarea id="search-query" title="Enter your search query"></textarea>
+            <br>
+            <select id="search-type" title="Select your search type">
+                <option value="fulltext">Fulltext</option>
+                <option value="xquery">X-Query</option>
+                <option value="logical">Advanced search</option>
+            </select>
+            <br>
+            <input id="search-button" type="button" value="Search" title="Click to search">
+        </div>
         <table id="document-list">
             <thead>
                 <tr>
