@@ -1,6 +1,7 @@
 package api;
 
 import database.BaseXClient;
+import database.SearchQueryProcessor;
 import org.basex.BaseX;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -55,6 +56,19 @@ public class SearchDocuments extends HttpServlet {
                             "<title>{$x/teiHeader//title/string()}</title>" +
                             "<date>{$x/teiHeader//date/string()}</date>" +
                             "</data>", Strings.addSlashes(searchQuery));
+                    break;
+
+                case "logical":
+                    String search = SearchQueryProcessor.processQuery(searchQuery);
+                    System.out.println(search);
+                    q = client.preparedQuery("for $x in collection()/TEI " +
+                            "where $x/string() contains text %s" +
+                            "return " +
+                            "<data>" +
+                            "<id>{$x/@xml:id/string()}</id>" +
+                            "<title>{$x/teiHeader//title/string()}</title>" +
+                            "<date>{$x/teiHeader//date/string()}</date>" +
+                            "</data>",  search);
                     break;
             }
         }

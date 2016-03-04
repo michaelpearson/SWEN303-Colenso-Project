@@ -313,6 +313,7 @@ public final class BaseXClient {
          * @throws IOException I/O exception
          */
         Query(final String query) throws IOException {
+            System.out.println(query);
             id = exec(0, query);
         }
 

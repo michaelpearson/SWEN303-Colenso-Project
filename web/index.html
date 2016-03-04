@@ -14,7 +14,7 @@
                     for(var a = 0;a < documents.length;a++) {
                         var doc = $('<tr></tr>');
                         var title = $('<td>');
-                        title.append("<a href=\"/documents/view.html#" + documents[a].id + "\">" + documents[a].title + "</a>");
+                        title.append("<a href=\"/api/document?documentId=" + documents[a].id + "\">" + documents[a].title + "</a>");
                         var date = $('<td>');
                         date.text(documents[a].date);
                         doc.append(title);
