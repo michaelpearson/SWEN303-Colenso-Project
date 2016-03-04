@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="trang">
+  <library name="saxon9he">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/trang.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/saxon9he.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
