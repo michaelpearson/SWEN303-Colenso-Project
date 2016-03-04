@@ -13,6 +13,15 @@
         <servlet-name>GetDocument</servlet-name>
         <servlet-class>api.GetDocument</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddDocument</servlet-name>
+        <servlet-class>api.AddDocument</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BulkDownload</servlet-name>
+        <servlet-class>api.BulkDownload</servlet-class>
+    </servlet>
+
 
     <servlet-mapping>
         <servlet-name>DatabaseStatus</servlet-name>
@@ -25,5 +34,13 @@
     <servlet-mapping>
         <servlet-name>GetDocument</servlet-name>
         <url-pattern>/api/document</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddDocument</servlet-name>
+        <url-pattern>/api/addDocument</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BulkDownload</servlet-name>
+        <url-pattern>/api/download</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -24,20 +24,44 @@ public class GetDocument extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
 
-        String documentId = request.getParameter("documentId");
-        if(documentId == null || documentId.equals("")) {
-            throw new IllegalArgumentException("Document ID must be supplied");
-        }
-        BaseXClient client = BaseXClient.getClient();
-
-        BaseXClient.Query q = client.preparedQuery("for $b in collection()\n" +
-                "where $b//TEI[@xml:id=\"%s\"]\n" +
-                "return $b", documentId);
-
         try {
-            DocumentRenderer.simpleTransform(q.next(), new WriterOutputStream(response.getWriter()));
-        } catch (TransformerException e) {
-            e.printStackTrace();
+            int documentId = Integer.parseInt(request.getParameter("documentId"));
+            String downloadType = request.getParameter("type");
+            downloadType = downloadType == null ? "html" : downloadType;
+
+            boolean forceDownload = request.getParameter("download") != null && request.getParameter("download").equals("true");
+
+            BaseXClient client = BaseXClient.getClient();
+            BaseXClient.Query q = client.preparedQuery("for $b in collection()/TEI\n" +
+                    "where db:node-id($b)=%d\n" +
+                    "return $b", documentId);
+            String document = q.next();
+            if(document == null) {
+                throw new RuntimeException("Document not found");
+            }
+            switch(downloadType) {
+                default:
+                case "html":
+                    if(forceDownload) {
+                        response.setHeader("Content-Disposition", "attachment;filename=document.html");
+                    }
+                    try {
+                        DocumentRenderer.simpleTransform(document, new WriterOutputStream(response.getWriter()));
+                    } catch (TransformerException e) {
+                        throw new RuntimeException("Error rendering document");
+                    }
+
+                    break;
+                case "xml":
+                    if(forceDownload) {
+                        response.setHeader("Content-Disposition", "attachment;filename=document.xml");
+                    }
+                    response.setHeader("content-type", "application/xml");
+                    response.getWriter().print(document);
+                    break;
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Document ID must be supplied");
         }
     }
 }

@@ -34,7 +34,7 @@ public class SearchDocuments extends HttpServlet {
         if(searchType == null || searchType.equals("") || searchQuery.equals("")) {
             q = client.query("for $x in collection()/TEI\n" +
                     "return <data>\n" +
-                    "         <id>{$x/@xml:id/string()}</id>\n" +
+                    "         <id>{db:node-id($x)}</id>\n" +
                     "         <title>{$x/teiHeader//title/string()}</title>\n" +
                     "         <date>{$x/teiHeader//date/string()}</date>\n" +
                     "       </data>");
@@ -44,7 +44,7 @@ public class SearchDocuments extends HttpServlet {
                 default:
                     q = client.preparedQuery("for $x in collection()/TEI where $x//text() contains text \"%s\" using fuzzy return " +
                             "<data>" +
-                            "<id>{$x/@xml:id/string()}</id>" +
+                            "<id>{db:node-id($x)}</id>" +
                             "<title>{$x/teiHeader//title/string()}</title>" +
                             "<date>{$x/teiHeader//date/string()}</date>" +
                             "</data>", Strings.addSlashes(searchQuery));
@@ -52,7 +52,7 @@ public class SearchDocuments extends HttpServlet {
                 case "xquery":
                     q = client.preparedQuery("for $x in collection()/TEI where $x%s return " +
                             "<data>" +
-                            "<id>{$x/@xml:id/string()}</id>" +
+                            "<id>{db:node-id($x)}</id>" +
                             "<title>{$x/teiHeader//title/string()}</title>" +
                             "<date>{$x/teiHeader//date/string()}</date>" +
                             "</data>", Strings.addSlashes(searchQuery));
@@ -65,7 +65,7 @@ public class SearchDocuments extends HttpServlet {
                             "where $x/string() contains text %s" +
                             "return " +
                             "<data>" +
-                            "<id>{$x/@xml:id/string()}</id>" +
+                            "<id>{db:node-id($x)}</id>" +
                             "<title>{$x/teiHeader//title/string()}</title>" +
                             "<date>{$x/teiHeader//date/string()}</date>" +
                             "</data>",  search);
