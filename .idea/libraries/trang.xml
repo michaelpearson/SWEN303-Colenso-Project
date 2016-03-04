@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="trang">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/trang.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

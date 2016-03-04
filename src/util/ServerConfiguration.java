@@ -58,14 +58,14 @@ public class ServerConfiguration {
         } catch (ClassCastException e) {
             throw new RuntimeException("Invalid option type");
         }
-        throw new RuntimeException("Configuration Option not found");
+        throw new RuntimeException(String.format("Configuration Option %s not found", optionName));
     }
 
     @NotNull public static Object getConfigurationOption(@NotNull String optionName) {
         if(configuration.containsKey(optionName)) {
             return configuration.get(optionName);
         }
-        throw new RuntimeException("Configuration Option not found");
+        throw new RuntimeException(String.format("Configuration Option %s not found", optionName));
     }
 
 }

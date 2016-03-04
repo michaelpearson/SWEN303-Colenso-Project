@@ -49,7 +49,6 @@ public class SearchDocuments extends HttpServlet {
                             "</data>", Strings.addSlashes(searchQuery));
                     break;
                 case "xquery":
-                    System.out.println(String.format("Search query %s", searchQuery));
                     q = client.preparedQuery("for $x in collection()/TEI where $x%s return " +
                             "<data>" +
                             "<id>{$x/@xml:id/string()}</id>" +
@@ -58,24 +57,27 @@ public class SearchDocuments extends HttpServlet {
                             "</data>", Strings.addSlashes(searchQuery));
                     break;
             }
-
         }
-
         String row;
         JSONArray documents = new JSONArray();
-
-        while((row = q.next()) != null) {
-            Document dom = Jsoup.parse(row, "", Parser.xmlParser());
-            String id = dom.getElementsByTag("id").first().text();
-            String title = dom.getElementsByTag("title").first().text();
-            String date = dom.getElementsByTag("date").first().text();
-            JSONObject document = new JSONObject();
-            document.put("id", id);
-            document.put("title", title);
-            document.put("date", date);
-            documents.add(document);
+        try {
+            while ((row = q.next()) != null) {
+                Document dom = Jsoup.parse(row, "", Parser.xmlParser());
+                String id = dom.getElementsByTag("id").first().text();
+                String title = dom.getElementsByTag("title").first().text();
+                String date = dom.getElementsByTag("date").first().text();
+                JSONObject document = new JSONObject();
+                document.put("id", id);
+                document.put("title", title);
+                document.put("date", date);
+                documents.add(document);
+            }
+            resp.put("documents", documents);
+        } catch (IOException e) {
+            resp.put("error", true);
+            resp.put("message", e.getMessage());
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
-        resp.put("documents", documents);
 
         Response.writeJsonResponse(resp, response);
         client.close();

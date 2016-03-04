@@ -22,6 +22,12 @@
                         tableBody.append(doc);
                     }
                 }
+                function displayError(error) {
+                    error = error || {};
+                    if(error.error && error.message) {
+                        alert(error.message);
+                    }
+                }
                 $('#search-button').click(function () {
                     var old = window.location.hash;
                     var hash = JSON.stringify({
@@ -42,7 +48,7 @@
                             $('#search-type').val(search.type);
                             $('#search-query').val(search.query);
                         }
-                        searchDocument(search.type || "", search.query || "", updateDocuments);
+                        searchDocument(search.type || "", search.query || "", updateDocuments, displayError);
                     } catch (e) {
                         window.location.hash = "";
                     }

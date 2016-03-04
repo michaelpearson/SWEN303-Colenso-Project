@@ -12,6 +12,8 @@
                     document = document || {};
                     if(document.body) {
                         $('#body').html(document.body);
+                        $('#title').html(document.title);
+                        $('#date').html(document.date);
                     }
                 });
             });
@@ -19,8 +21,8 @@
     </head>
     <body>
         <div id="document">
-            <div id="title"></div>
-            <div id="date"></div>
+            <h2 id="title"></h2>
+            <h4 id="date"></h4>
             <ul id="names"></ul>
             <div id="body"></div>
         </div>

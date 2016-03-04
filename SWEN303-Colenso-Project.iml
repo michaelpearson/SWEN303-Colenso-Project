@@ -24,5 +24,6 @@
     <orderEntry type="library" name="json-simple-1.1.1" level="project" />
     <orderEntry type="library" name="annotations" level="project" />
     <orderEntry type="library" name="jsoup-1.8.3" level="project" />
+    <orderEntry type="library" name="trang" level="project" />
   </component>
 </module>

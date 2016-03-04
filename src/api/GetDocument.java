@@ -31,6 +31,8 @@ public class GetDocument extends HttpServlet {
 
         JSONObject resp = new JSONObject();
         resp.put("body", d.getElementsByTag("body").first().html());
+        resp.put("title", d.getElementsByTag("title").first().text());
+        resp.put("date", d.getElementsByTag("date").first().text());
         Response.writeJsonResponse(resp, response);
     }
 }
