@@ -1,8 +1,10 @@
-function searchDocument(searchType, searchQuery, callback, errorCallback) {
+function searchDocument(searchType, searchQuery, pageIndex, pageCount, callback, errorCallback) {
     $.ajax("/api/search", {
         data : {
             type : searchType || "",
-            query : searchQuery || ""
+            query : searchQuery || "",
+            page: pageIndex || 1,
+            count : pageCount || 50
         },
         success : callback || function () {},
         statusCode : {

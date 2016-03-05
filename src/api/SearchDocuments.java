@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @WebServlet(name = "SearchDocuments")
 public class SearchDocuments extends HttpServlet {
@@ -26,6 +27,9 @@ public class SearchDocuments extends HttpServlet {
 
         String searchType = request.getParameter("type");
         String searchQuery = request.getParameter("query");
+        int page = Integer.valueOf(request.getParameter("page")) - 1;
+        int count = Integer.valueOf(request.getParameter("count"));
+        int startIndex = page * count;
 
         searchQuery = searchQuery == null ? "" : searchQuery;
 
@@ -73,9 +77,17 @@ public class SearchDocuments extends HttpServlet {
             }
         }
         String row;
+
         JSONArray documents = new JSONArray();
+        int i = 0;
         try {
             while ((row = q.next()) != null) {
+                if(i++ < startIndex) {
+                    continue;
+                }
+                if(i > startIndex + count) {
+                    continue;
+                }
                 Document dom = Jsoup.parse(row, "", Parser.xmlParser());
                 String id = dom.getElementsByTag("id").first().text();
                 String title = dom.getElementsByTag("title").first().text();
@@ -92,6 +104,9 @@ public class SearchDocuments extends HttpServlet {
             resp.put("message", e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+        resp.put("total", i);
+        resp.put("start", startIndex);
+        resp.put("end", startIndex + count > i ? i : startIndex + count);
 
         Response.writeJsonResponse(resp, response);
         client.close();

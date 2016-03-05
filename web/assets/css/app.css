@@ -1,6 +1,4 @@
 .menu {
-    border-radius: 0 !important;
-    width: 100%;
     margin: 0 !important;
 }
 
@@ -19,13 +17,16 @@ div.menu div.menu {
 }
 .wrapper {
     min-height: 100%;
+    min-widows: 300px;
     position: relative;
 }
 .content {
-    padding-bottom: 300px;
+    padding-bottom: 400px;
 }
 .page {
     display: none;
+    padding-right:10px;
+    padding-left: 10px;
 }
 .loadingbar {
     height: 2px;
@@ -88,4 +89,16 @@ div.input[contenteditable] {
 .button-container {
     height: 38px;
     width: auto;
+}
+
+.page-size {
+    padding: 3px 3px 3px 10px;
+}
+
+.document-title {
+    width: 70%;
+}
+
+tr:hover {
+    background-color: #f2fffc;
 }
