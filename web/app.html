@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Colenso Project</title>
+        <link href="assets/lib/semanticui/semantic.css" rel="stylesheet">
+        <link href="assets/css/app.css" rel="stylesheet">
+        <script src="assets/lib/jquery-2.2.1.js"></script>
+        <script src="assets/lib/semanticui/semantic.js"></script>
+        <script src="assets/js/api.js"></script>
+        <script src="assets/js/home.js"></script>
+        <script src="assets/js/search.js"></script>
+        <script src="assets/js/upload.js"></script>
+        <script src="assets/js/stats.js"></script>
+        <script src="assets/js/app.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="ui inverted segment menu">
+                <div class="ui inverted secondary pointing menu stackable">
+                    <a href="#/home" class="item active">Home</a>
+                    <a href="#/search" class="item">Search</a>
+                    <a href="#/upload" class="item">Add document</a>
+                    <a href="#/stats" class="item">Statistics</a>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="page" id="home">
+                    <div class="title">
+                        <h1>Welcome to the Colenso Project</h1>
+                    </div>
+                    <div class="intro">
+                        <p>Welcome to the home of the Colenso project. This website is a user friendly repository of letters and other documents relating to William Colenso. Each document is stored in the <a href="http://www.tei-c.org/index.xml" target="_blank">TEI</a> format and is available for download.</p>
+                        <p>To get started you can <a href="#/search">browse</a> all of the documents or begin a <a href="#/search">search</a></p>
+                        <br />
+                        <div class="ui visible message">
+                            <div class="left">
+                                <h2><a href="https://en.wikipedia.org/wiki/William_Colenso" target="_blank">William Colenso</a></h2>
+                                <p>Botanist</p>
+                                <p>William Colenso was a Cornish Christian missionary to New Zealand, and also a printer, botanist, explorer and politician. He attended the signing of the Treaty of Waitangi and later wrote an account of the events at Waitangi. <br />&mdash;<a href="https://en.wikipedia.org/wiki/William_Colenso" target="_blank">Wikipedia</a></p>
+                                <p><b>Born:</b> November 7, 1811, Penzance, United Kingdom</p>
+                                <p><b>Died:</b> February 10, 1899, Napier</p>
+                            </div>
+                            <div class="right">
+                                <img src="assets/images/colenso.png">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="page" id="search">
+                    <div class="title">
+                        <h1>Search</h1>
+                    </div>
+                    <div class="search-box">
+                        <div class="ui right labeled input action">
+                            <div id="search-input">
+                                <input type="text" placeholder="Search term">
+                            </div>
+                            <div class="ui right labeled input action button-container">
+                                <div class="ui dropdown label">
+                                    <div class="text" id="search-type">Simple search</div>
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <div class="item">Simple search</div>
+                                        <div class="item">Logical search</div>
+                                        <div class="item">XQuery search</div>
+                                    </div>
+                                </div>
+                                <button class="ui button primary" id="button-search">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" id="upload">
+
+                </div>
+                <div class="page" id="stats">
+
+                </div>
+            </div>
+
+            <div class="ui vertical inverted black footer segment" style="position: absolute; bottom: 0;left: 0; width: 100%; min-height: 300px;">
+                <div class="container">
+                    <div class="ui stackable inverted divided relaxed grid">
+                        <div class="eight wide column">
+                            <h3 class="ui inverted header">Colenso Project</h3>
+                            <p>Call To action</p>
+                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <button type="submit" class="ui pink button">Donate Today</button>
+                            </form>
+                        </div>
+                        <div class="four wide column">
+                            <h5 class="ui pink inverted header">List 1</h5>
+                            <div class="ui inverted link list">
+                                <a class="item" href="#">Item 1</a>
+                                <a class="item" href="#">Item 2</a>
+                                <a class="item" href="#">Item 3</a>
+                                <a class="disabled item">Item 4</a>
+                            </div>
+                        </div>
+                        <div class="four wide column">
+                            <h5 class="ui pink inverted header">List 2</h5>
+                            <div class="ui inverted link list">
+                                <a class="item" href="#">Item 1</a>
+                                <a class="item" href="#">Item 2</a>
+                                <a class="item" href="#">Item 3</a>
+                                <a class="disabled item">Item 4</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
