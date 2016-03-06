@@ -38,7 +38,7 @@ var app = {
             if (!pageArguments.hasOwnProperty(k)) {
                 continue;
             }
-            hash += '/' + k + '/' + pageArguments[k];
+            hash += '/' + k + '/' + encodeURIComponent(pageArguments[k]);
         }
         if (setHash) {
             window.location.hash = hash;

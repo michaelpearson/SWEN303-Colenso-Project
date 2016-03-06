@@ -214,7 +214,13 @@ pages.search = {
         var pageSize = pages.search.getPageSize();
         var pageNumber = pages.search.getPageNumber();
         var oldHash = window.location.hash;
-        var newHash = "#/search/type/" + queryType + "/query/" + query + "/count/" + pageSize + "/page/" + pageNumber;
+        var newHash = app.encodeHash("search", {
+            type : queryType,
+            query : query,
+            count : pageSize,
+            page : pageNumber
+        });
+        console.log(newHash);
         if(oldHash == newHash) {
             app.renderPage();
         } else {
