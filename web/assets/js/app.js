@@ -3,6 +3,7 @@ $(function () {
         app.renderPage();
     }).trigger('hashchange');
 });
+var pages = window.pages || {};
 var app = {
     disableNavigation : false,
     decodeHash : function()
@@ -32,7 +33,7 @@ var app = {
     },
     encodeHash : function(pageName, pageArguments, setHash) {
         setHash = setHash || false;
-        var hash = "/" + pageName;
+        var hash = "#/" + pageName;
         for (var k in pageArguments) {
             if (!pageArguments.hasOwnProperty(k)) {
                 continue;
@@ -54,13 +55,12 @@ var app = {
         $('.page').css({
             display: 'none'
         });
-        if (window[pageState.pageName] && window[pageState.pageName].renderPage) {
+        if (pages[pageState.pageName] && pages[pageState.pageName].renderPage) {
             app.beginNavigation();
-            window[pageState.pageName].renderPage(pageState.arguments, app.endNavigation.bind(this));
+            pages[pageState.pageName].renderPage(pageState.arguments, app.endNavigation.bind(this));
         }
     },
     beginNavigation : function() {
-        console.log("Begin navigation");
         $('.loadingbar').remove();
         var bar = $('<div class="loadingbar"></div>');
         bar.animate({
@@ -74,7 +74,6 @@ var app = {
         var bar = $('.loadingbar');
         final = final || false;
         if (final) {
-            console.log("end navigation");
             bar.remove();
         } else {
             bar.animate({

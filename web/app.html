@@ -5,10 +5,12 @@
         <title>Colenso Project</title>
         <link href="assets/lib/semanticui/semantic.css" rel="stylesheet">
         <link href="assets/css/app.css" rel="stylesheet">
+        <link href="assets/css/tei.css" rel="stylesheet">
         <script src="assets/lib/jquery-2.2.1.js"></script>
         <script src="assets/lib/semanticui/semantic.js"></script>
         <script src="assets/js/api.js"></script>
         <script src="assets/js/home.js"></script>
+        <script src="assets/js/document.js"></script>
         <script src="assets/js/search.js"></script>
         <script src="assets/js/upload.js"></script>
         <script src="assets/js/stats.js"></script>
@@ -77,7 +79,7 @@
                         <div class="title">
                             <h3>Results: </h3>
                         </div>
-                        <span class="documents-found"></span>
+                        <p class="documents-found"></p>
                         <table class="ui celled table unstackable">
                             <thead>
                                 <tr>
@@ -115,6 +117,14 @@
                 </div>
                 <div class="page" id="stats">
 
+                </div>
+                <div class="page" id="document">
+                    <div class="title">
+                        <h1>Document</h1>
+                    </div>
+                    <div id="document-view">
+
+                    </div>
                 </div>
             </div>
 

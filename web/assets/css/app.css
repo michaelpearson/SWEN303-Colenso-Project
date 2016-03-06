@@ -102,3 +102,9 @@ div.input[contenteditable] {
 tr:hover {
     background-color: #f2fffc;
 }
+.institution, #document-view div.footer {
+    display: none;
+}
+.stdfooter {
+    padding-top: 30px;
+}
