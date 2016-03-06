@@ -2,80 +2,163 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Test</title>
+        <title>Colenso Project</title>
+        <link href="assets/lib/semanticui/semantic.css" rel="stylesheet">
+        <link href="assets/css/app.css" rel="stylesheet">
+        <link href="assets/css/tei.css" rel="stylesheet">
         <script src="assets/lib/jquery-2.2.1.js"></script>
-        <script src="/assets/js/api.js"></script>
-        <script>
-            $(function () {
-                function updateDocuments(documents) {
-                    documents = documents.documents || [];
-                    var tableBody = $('#document-list-body');
-                    tableBody.empty();
-                    for(var a = 0;a < documents.length;a++) {
-                        var doc = $('<tr></tr>');
-                        var title = $('<td>');
-                        title.append("<a href=\"/api/document?documentId=" + documents[a].id + "\">" + documents[a].title + "</a>");
-                        var date = $('<td>');
-                        date.text(documents[a].date);
-                        doc.append(title);
-                        doc.append(date);
-                        tableBody.append(doc);
-                    }
-                }
-                function displayError(error) {
-                    error = error || {};
-                    if(error.error && error.message) {
-                        alert(error.message);
-                    }
-                }
-                $('#search-button').click(function () {
-                    var old = window.location.hash;
-                    var hash = JSON.stringify({
-                        type : $('#search-type').val(),
-                        query : $('#search-query').val()
-                    });
-                    window.location.hash = hash;
-                    if(old == window.location.hash) {
-                        $(window).trigger('hashchange');
-                    }
-                });
-
-                $(window).bind('hashchange', function() {
-                    try {
-                        var search = {};
-                        if (window.location.hash.replace(/^#/, '') != "") {
-                            search = JSON.parse(window.location.hash.replace(/^#/, ''));
-                            $('#search-type').val(search.type);
-                            $('#search-query').val(search.query);
-                        }
-                        searchDocument(search.type || "", search.query || "", updateDocuments, displayError);
-                    } catch (e) {
-                        window.location.hash = "";
-                    }
-                }).trigger('hashchange');
-            });
-        </script>
+        <script src="assets/lib/semanticui/semantic.js"></script>
+        <script src="assets/js/api.js"></script>
+        <script src="assets/js/home.js"></script>
+        <script src="assets/js/document.js"></script>
+        <script src="assets/js/search.js"></script>
+        <script src="assets/js/upload.js"></script>
+        <script src="assets/js/stats.js"></script>
+        <script src="assets/js/app.js"></script>
     </head>
     <body>
-        <div id="search-box">
-            <textarea id="search-query" title="Enter your search query"></textarea>
-            <br>
-            <select id="search-type" title="Select your search type">
-                <option value="fulltext">Fulltext</option>
-                <option value="xquery">X-Query</option>
-                <option value="logical">Advanced search</option>
-            </select>
-            <br>
-            <input id="search-button" type="button" value="Search" title="Click to search">
+        <div class="wrapper">
+            <div class="ui inverted segment menu">
+                <div class="ui inverted secondary pointing menu stackable">
+                    <a href="#/home" class="item active">Home</a>
+                    <a href="#/search" class="item">Search</a>
+                    <a href="#/upload" class="item">Add document</a>
+                    <a href="#/stats" class="item">Statistics</a>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="page" id="home">
+                    <div class="title">
+                        <h1>Welcome to the Colenso Project</h1>
+                    </div>
+                    <div class="intro">
+                        <p>Welcome to the home of the Colenso project. This website is a user friendly repository of letters and other documents relating to William Colenso. Each document is stored in the <a href="http://www.tei-c.org/index.xml" target="_blank">TEI</a> format and is available for download.</p>
+                        <p>To get started you can <a href="#/search">browse</a> all of the documents or begin a <a href="#/search">search</a></p>
+                        <br />
+                        <div class="ui visible message">
+                            <div class="left">
+                                <h2><a href="https://en.wikipedia.org/wiki/William_Colenso" target="_blank">William Colenso</a></h2>
+                                <p>Botanist</p>
+                                <p>William Colenso was a Cornish Christian missionary to New Zealand, and also a printer, botanist, explorer and politician. He attended the signing of the Treaty of Waitangi and later wrote an account of the events at Waitangi. <br />&mdash;<a href="https://en.wikipedia.org/wiki/William_Colenso" target="_blank">Wikipedia</a></p>
+                                <p><b>Born:</b> November 7, 1811, Penzance, United Kingdom</p>
+                                <p><b>Died:</b> February 10, 1899, Napier</p>
+                            </div>
+                            <div class="right">
+                                <img src="assets/images/colenso.png">
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="page" id="search">
+                    <div class="title">
+                        <h1>Search</h1>
+                    </div>
+                    <div class="search-box">
+                        <div class="ui right labeled input action">
+                            <div id="search-input">
+                                <input type="text" placeholder="Search term">
+                            </div>
+                            <div class="ui right labeled input action button-container">
+                                <div class="ui dropdown label">
+                                    <div class="text" id="search-type">Simple search</div>
+                                    <i class="dropdown icon"></i>
+                                    <div class="menu">
+                                        <div class="item">Simple search</div>
+                                        <div class="item">Logical search</div>
+                                        <div class="item">XQuery search</div>
+                                    </div>
+                                </div>
+                                <button class="ui button primary" id="button-search">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="results">
+                        <div class="title">
+                            <h3>Results: </h3>
+                        </div>
+                        <p class="documents-found"></p>
+                        <table class="ui celled table unstackable">
+                            <thead>
+                                <tr>
+                                    <th class="document-title">Document Title</th>
+                                    <th class="document-date">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="result-body">
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2">
+                                        <div class="ui buttons right floated page-size">
+                                            <button class="ui button">10</button>
+                                            <button class="ui button active">50</button>
+                                            <button class="ui button">100</button>
+                                        </div>
+                                        <div class="ui right floated pagination menu">
+                                            <a class="icon item">
+                                                <i class="left chevron icon"></i>
+                                            </a>
+                                            <a class="icon item">
+                                                <i class="right chevron icon"></i>
+                                            </a>
+                                        </div>
+
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="page" id="upload">
+
+                </div>
+                <div class="page" id="stats">
+
+                </div>
+                <div class="page" id="document">
+                    <div class="title">
+                        <h1>Document</h1>
+                    </div>
+                    <div id="document-view">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui vertical inverted black footer segment" style="position: absolute; bottom: 0;left: 0; width: 100%; min-height: 300px;">
+                <div class="container">
+                    <div class="ui stackable inverted divided relaxed grid">
+                        <div class="eight wide column">
+                            <h3 class="ui inverted header">Colenso Project</h3>
+                            <p>Call To action</p>
+                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                                <button type="submit" class="ui pink button">Donate Today</button>
+                            </form>
+                        </div>
+                        <div class="four wide column">
+                            <h5 class="ui pink inverted header">List 1</h5>
+                            <div class="ui inverted link list">
+                                <a class="item" href="#">Item 1</a>
+                                <a class="item" href="#">Item 2</a>
+                                <a class="item" href="#">Item 3</a>
+                                <a class="disabled item">Item 4</a>
+                            </div>
+                        </div>
+                        <div class="four wide column">
+                            <h5 class="ui pink inverted header">List 2</h5>
+                            <div class="ui inverted link list">
+                                <a class="item" href="#">Item 1</a>
+                                <a class="item" href="#">Item 2</a>
+                                <a class="item" href="#">Item 3</a>
+                                <a class="disabled item">Item 4</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <table id="document-list">
-            <thead>
-                <tr>
-                    <td>Document title</td>
-                    <td>Date</td>
-                </tr>
-            </thead>
-            <tbody id="document-list-body"></tbody>
-        </table>
     </body>
 </html>
