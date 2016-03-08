@@ -18,7 +18,7 @@
     </head>
     <body>
         <div class="wrapper">
-            <div class="ui inverted segment menu">
+            <div class="ui inverted segment menu site-header">
                 <div class="ui inverted secondary pointing menu stackable">
                     <a href="#/home" class="item active">Home</a>
                     <a href="#/search" class="item">Search</a>
@@ -113,7 +113,14 @@
                     </div>
                 </div>
                 <div class="page" id="upload">
-
+                    <div class="title">
+                        <h1>Upload new documents</h1>
+                    </div>
+                    <form id="formUpload">
+                        <input type="file" name="doc">
+                        <br />
+                        <input type="button" id="uploadSubmitButton" value="Upload">
+                    </form>
                 </div>
                 <div class="page" id="stats">
 

@@ -42,12 +42,12 @@ public class AddDocument extends HttpServlet {
                 BaseXClient client = BaseXClient.getClient();
                 String path = UUID.randomUUID().toString() + "/" + file.getName();
                 System.out.println(client.preparedCommand("ADD to %s %s", path, writer.toString()));
-
-                BaseXClient.Query q = client.preparedQuery("db:open(\"%s\", \"%s\")/db:node-id(TEI)", ServerConfiguration.getConfigurationString("database", "name"), path);
-
-                String documentId = q.next();
-                if(documentId != null) {
-                    documentsAdded.add(Integer.valueOf(documentId));
+                if(!writer.toString().equals("")) {
+                    BaseXClient.Query q = client.preparedQuery("db:open(\"%s\", \"%s\")/db:node-id(TEI)", ServerConfiguration.getConfigurationString("database", "name"), path);
+                    String documentId = q.next();
+                    if(documentId != null) {
+                        documentsAdded.add(Integer.valueOf(documentId));
+                    }
                 }
             }
         } catch (FileUploadException e) {
