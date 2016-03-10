@@ -109,3 +109,16 @@ tr:hover {
 .stdfooter {
     padding-top: 30px;
 }
+.hidden-file-input {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}
+
+#formUpload {
+    text-align: center;
+}
+#formUpload button, #formUpload input {
+    margin-top:10px;
+    margin-bottom:10px;
+}

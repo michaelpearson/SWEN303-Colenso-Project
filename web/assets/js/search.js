@@ -5,6 +5,7 @@ pages.search = {
     pageNumber : 1,
     documentCache : [],
     queryResultCount : 0,
+    queryResultAllId : "",
     queryValue : function (val) {
         var el = $('#search-input *');
         if(val === undefined) {
@@ -80,6 +81,7 @@ pages.search = {
     populateResults : function () {
         var documents = pages.search.documentCache;
         $('.documents-found').text(pages.search.queryResultCount + " document" + (pages.search.queryResultCount > 1 || pages.search.queryResultCount == 0 ? "s" : ""));
+        $('.documents-found-download').attr('href', '/api/download?document=' + pages.search.queryResultAllId);
         var resultBody = $('#result-body');
         resultBody.children().remove();
         for(var a = 0;a < documents.length;a++) {
@@ -111,6 +113,7 @@ pages.search = {
             if(documents && documents.documents && documents.documents.length) {
                 pages.search.documentCache = documents.documents;
                 pages.search.queryResultCount = documents.total;
+                pages.search.queryResultAllId = documents.allDocumentIDs;
             } else {
                 pages.search.documentCache = [];
                 pages.search.queryResultCount = 0;
@@ -132,6 +135,7 @@ pages.search = {
             searchContainer.append('<div placeholder="Search term" class="input" contenteditable="true"></div>');
         } else {
             var el = searchContainer.append('<input type="text" placeholder="Search term" id="search-input">');
+            el.off("keydown");
             el.keydown(function (event) {
                 if(event.keyCode == 13) {
                     pages.search.pageNumber = 1;

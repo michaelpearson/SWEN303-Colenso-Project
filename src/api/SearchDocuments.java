@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(name = "SearchDocuments")
 public class SearchDocuments extends HttpServlet {
@@ -29,6 +30,7 @@ public class SearchDocuments extends HttpServlet {
         String searchQuery = request.getParameter("query");
         int page = Integer.valueOf(request.getParameter("page")) - 1;
         int count = Integer.valueOf(request.getParameter("count"));
+        boolean download = !"0".equals(request.getParameter("download"));
         int startIndex = page * count;
 
         searchQuery = searchQuery == null ? "" : searchQuery;
@@ -107,7 +109,6 @@ public class SearchDocuments extends HttpServlet {
         resp.put("total", i);
         resp.put("start", startIndex);
         resp.put("end", startIndex + count > i ? i : startIndex + count);
-
         Response.writeJsonResponse(resp, response);
         client.close();
     }

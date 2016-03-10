@@ -79,7 +79,7 @@
                         <div class="title">
                             <h3>Results: </h3>
                         </div>
-                        <p class="documents-found"></p>
+                        <p><a class="documents-found-download" href="#"><span class="documents-found"></span> - click to download</a></p>
                         <table class="ui celled table unstackable">
                             <thead>
                                 <tr>
@@ -117,9 +117,15 @@
                         <h1>Upload new documents</h1>
                     </div>
                     <form id="formUpload">
-                        <input type="file" name="doc">
-                        <br />
-                        <input type="button" id="uploadSubmitButton" value="Upload">
+                        <div class="hidden-file-input">
+                            <input type="file" name="doc">
+                        </div>
+                        <button class="ui left labeled icon button primary large" id="browse">
+                            <i class="file icon"></i>
+                            Browse
+                        </button>
+                        <h3 id="file-name-display"></h3>
+                        <input class="ui labeled button secondary large" type="button" id="uploadSubmitButton" value="Upload">
                     </form>
                 </div>
                 <div class="page" id="stats">

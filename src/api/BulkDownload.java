@@ -25,6 +25,12 @@ public class BulkDownload extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BaseXClient client = BaseXClient.getClient();
         String[] documents = request.getParameterValues("documents[]");
+        if(documents == null) {
+            String documentIds = request.getParameter("documents");
+            if(documentIds != null) {
+                documents = documentIds.split(",");
+            }
+        }
         if(documents == null || documents.length == 0) {
             throw new RuntimeException("You must supply at least one document");
         }
