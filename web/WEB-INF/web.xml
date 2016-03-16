@@ -17,10 +17,6 @@
         <servlet-name>AddDocument</servlet-name>
         <servlet-class>api.AddDocument</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>BulkDownload</servlet-name>
-        <servlet-class>api.BulkDownload</servlet-class>
-    </servlet>
 
 
     <servlet-mapping>
@@ -38,9 +34,5 @@
     <servlet-mapping>
         <servlet-name>AddDocument</servlet-name>
         <url-pattern>/api/addDocument</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BulkDownload</servlet-name>
-        <url-pattern>/api/download</url-pattern>
     </servlet-mapping>
 </web-app>
