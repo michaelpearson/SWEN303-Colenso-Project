@@ -1,13 +1,8 @@
 package api;
 
-import database.BaseXClient;
+import database.client.BaseXClient;
 import org.apache.commons.io.output.WriterOutputStream;
-import org.json.simple.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
 import util.DocumentRenderer;
-import util.Response;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 
 @WebServlet(name = "GetDocument")
 public class GetDocument extends HttpServlet {

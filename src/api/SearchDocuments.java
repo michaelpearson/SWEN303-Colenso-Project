@@ -1,15 +1,10 @@
 package api;
 
-import database.BaseXClient;
-import database.SearchQueryProcessor;
-import org.basex.BaseX;
-import org.json.simple.JSONArray;
+import database.client.BaseXClient;
+import database.documents.Search;
+import database.model.TeiDocument;
 import org.json.simple.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
-import util.Response;
-import util.Strings;
+import util.DocumentZip;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,24 +12,44 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "SearchDocuments")
 public class SearchDocuments extends HttpServlet {
+
+    private static Integer tryParseInt(String value, Integer defaultValue) {
+        try {
+            defaultValue = Integer.parseInt(value);
+        } catch (NumberFormatException ignore) {}
+        return defaultValue;
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         JSONObject resp = new JSONObject();
+
+
+
+
         BaseXClient client = BaseXClient.getClient();
 
         String searchType = request.getParameter("type");
         String searchQuery = request.getParameter("query");
-        int page = Integer.valueOf(request.getParameter("page")) - 1;
-        int count = Integer.valueOf(request.getParameter("count"));
+        int page = tryParseInt(request.getParameter("page"), 1) - 1;
+        int count = tryParseInt(request.getParameter("count"), 0);
         boolean download = !"0".equals(request.getParameter("download"));
         int startIndex = page * count;
-
         searchQuery = searchQuery == null ? "" : searchQuery;
 
+        Search search = new Search(searchType, searchQuery);
+        List<TeiDocument> searchResults = search.executeQuery();
+        if(download) {
+            DocumentZip.writeDocumentToStream(searchResults, response.getOutputStream());
+        } else {
+
+        }
+
+
+        /*
         BaseXClient.Query q;
 
         if(searchType == null || searchType.equals("") || searchQuery.equals("")) {
@@ -111,5 +126,6 @@ public class SearchDocuments extends HttpServlet {
         resp.put("end", startIndex + count > i ? i : startIndex + count);
         Response.writeJsonResponse(resp, response);
         client.close();
+        */
     }
 }

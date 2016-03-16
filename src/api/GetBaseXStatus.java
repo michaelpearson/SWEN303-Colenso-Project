@@ -1,6 +1,6 @@
 package api;
 
-import database.BaseXClient;
+import database.client.BaseXClient;
 import org.basex.BaseXServer;
 import org.json.simple.JSONObject;
 import util.Response;
