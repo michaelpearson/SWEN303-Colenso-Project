@@ -49,7 +49,7 @@ public class SearchDocuments extends HttpServlet {
             JSONArray documents = new JSONArray();
             for(int a = startIndex; a < startIndex + count;a++) {
                 JSONObject document = new JSONObject();
-                if(searchResults.get(a) != null) {
+                if(searchResults.size() > a && searchResults.get(a) != null) {
                     document.put("id", searchResults.get(a).getId());
                     document.put("title", searchResults.get(a).getTitle());
                     document.put("date", searchResults.get(a).getDate());

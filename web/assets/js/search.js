@@ -81,7 +81,7 @@ pages.search = {
     populateResults : function () {
         var documents = pages.search.documentCache;
         $('.documents-found').text(pages.search.queryResultCount + " document" + (pages.search.queryResultCount > 1 || pages.search.queryResultCount == 0 ? "s" : ""));
-        $('.documents-found-download').attr('href', '/api/download?document=' + pages.search.queryResultAllId);
+        $('.documents-found-download').attr('href', pages.search.getDownloadLink());
         var resultBody = $('#result-body');
         resultBody.children().remove();
         for(var a = 0;a < documents.length;a++) {
@@ -102,7 +102,8 @@ pages.search = {
         }
         pages.search.syncPagingControls();
     },
-    runQuery : function () {
+    runQuery : function (download) {
+        download = download === true;
         var queryType = this.queryType();
         var query = this.queryValue();
         searchDocument(queryType, query, pages.search.getPageNumber(), pages.search.getPageSize(), function (documents) {
@@ -125,6 +126,11 @@ pages.search = {
                 alert(data.message);
             }
         });
+    },
+    getDownloadLink : function () {
+        var queryType = this.queryType();
+        var query = this.queryValue();
+        return "/api/search?type=" + encodeURIComponent(queryType) + "&query=" + encodeURIComponent(query) + "&download=1";
     },
     updateSearchBox : function (value) {
         var searchContainer = $('#search-input');
@@ -224,7 +230,6 @@ pages.search = {
             count : pageSize,
             page : pageNumber
         });
-        console.log(newHash);
         if(oldHash == newHash) {
             app.renderPage();
         } else {

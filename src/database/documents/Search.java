@@ -93,7 +93,7 @@ public class Search {
                                 "<title>{$x/teiHeader//title/string()}</title>" +
                                 "<date>{$x/teiHeader//date/string()}</date>" +
                                 "<filename>{file:name(fn:base-uri($x))}</filename>" +
-                            "<xmldata>{convert:string-to-base64($x)}</xmldata>" +
+                            "<xmldata>{$x}</xmldata>" +
                             "</data>",  search);
                     break;
             }
