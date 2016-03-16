@@ -3,8 +3,13 @@ package api;
 import database.client.BaseXClient;
 import database.documents.Search;
 import database.model.TeiDocument;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 import util.DocumentZip;
+import util.Response;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,107 +30,39 @@ public class SearchDocuments extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        JSONObject resp = new JSONObject();
-
-
-
-
-        BaseXClient client = BaseXClient.getClient();
-
         String searchType = request.getParameter("type");
         String searchQuery = request.getParameter("query");
         int page = tryParseInt(request.getParameter("page"), 1) - 1;
         int count = tryParseInt(request.getParameter("count"), 0);
-        boolean download = !"0".equals(request.getParameter("download"));
+        boolean download = "1".equals(request.getParameter("download"));
         int startIndex = page * count;
         searchQuery = searchQuery == null ? "" : searchQuery;
 
         Search search = new Search(searchType, searchQuery);
         List<TeiDocument> searchResults = search.executeQuery();
+
         if(download) {
             DocumentZip.writeDocumentToStream(searchResults, response.getOutputStream());
         } else {
-
-        }
-
-
-        /*
-        BaseXClient.Query q;
-
-        if(searchType == null || searchType.equals("") || searchQuery.equals("")) {
-            q = client.query("for $x in collection()/TEI\n" +
-                    "return <data>\n" +
-                    "         <id>{db:node-id($x)}</id>\n" +
-                    "         <title>{$x/teiHeader//title/string()}</title>\n" +
-                    "         <date>{$x/teiHeader//date/string()}</date>\n" +
-                    "       </data>");
-        } else {
-            switch(searchType) {
-                case "fulltext":
-                default:
-                    q = client.preparedQuery("for $x in collection()/TEI where $x//text() contains text \"%s\" using fuzzy return " +
-                            "<data>" +
-                            "<id>{db:node-id($x)}</id>" +
-                            "<title>{$x/teiHeader//title/string()}</title>" +
-                            "<date>{$x/teiHeader//date/string()}</date>" +
-                            "</data>", Strings.addSlashes(searchQuery));
-                    break;
-                case "xquery":
-                    q = client.preparedQuery("for $x in collection()/TEI where $x%s return " +
-                            "<data>" +
-                            "<id>{db:node-id($x)}</id>" +
-                            "<title>{$x/teiHeader//title/string()}</title>" +
-                            "<date>{$x/teiHeader//date/string()}</date>" +
-                            "</data>", Strings.addSlashes(searchQuery));
-                    break;
-
-                case "logical":
-                    String search = SearchQueryProcessor.processQuery(searchQuery);
-                    System.out.println(search);
-                    q = client.preparedQuery("for $x in collection()/TEI " +
-                            "where $x/string() contains text %s" +
-                            "return " +
-                            "<data>" +
-                            "<id>{db:node-id($x)}</id>" +
-                            "<title>{$x/teiHeader//title/string()}</title>" +
-                            "<date>{$x/teiHeader//date/string()}</date>" +
-                            "</data>",  search);
-                    break;
-            }
-        }
-        String row;
-
-        JSONArray documents = new JSONArray();
-        int i = 0;
-        try {
-            while ((row = q.next()) != null) {
-                if(i++ < startIndex) {
-                    continue;
-                }
-                if(i > startIndex + count) {
-                    continue;
-                }
-                Document dom = Jsoup.parse(row, "", Parser.xmlParser());
-                String id = dom.getElementsByTag("id").first().text();
-                String title = dom.getElementsByTag("title").first().text();
-                String date = dom.getElementsByTag("date").first().text();
+            JSONObject resp = new JSONObject();
+            int i = 0;
+            JSONArray documents = new JSONArray();
+            for(int a = startIndex; a < startIndex + count;a++) {
                 JSONObject document = new JSONObject();
-                document.put("id", id);
-                document.put("title", title);
-                document.put("date", date);
-                documents.add(document);
+                if(searchResults.get(a) != null) {
+                    document.put("id", searchResults.get(a).getId());
+                    document.put("title", searchResults.get(a).getTitle());
+                    document.put("date", searchResults.get(a).getDate());
+                    documents.add(document);
+                    i++;
+                }
             }
+            resp.put("total", searchResults.size());
+            resp.put("start", startIndex);
+            resp.put("end", startIndex + i);
             resp.put("documents", documents);
-        } catch (IOException e) {
-            resp.put("error", true);
-            resp.put("message", e.getMessage());
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            Response.writeJsonResponse(resp, response);
+
         }
-        resp.put("total", i);
-        resp.put("start", startIndex);
-        resp.put("end", startIndex + count > i ? i : startIndex + count);
-        Response.writeJsonResponse(resp, response);
-        client.close();
-        */
     }
 }
