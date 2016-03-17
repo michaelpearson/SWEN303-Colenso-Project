@@ -1,8 +1,6 @@
 package api;
 
-import database.client.BaseXClient;
-import org.apache.commons.io.output.WriterOutputStream;
-import util.DocumentRenderer;
+import database.model.TeiDocument;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,17 +19,9 @@ public class GetDocument extends HttpServlet {
             int documentId = Integer.parseInt(request.getParameter("documentId"));
             String downloadType = request.getParameter("type");
             downloadType = downloadType == null ? "html" : downloadType;
-
             boolean forceDownload = request.getParameter("download") != null && request.getParameter("download").equals("true");
+            TeiDocument document = TeiDocument.fromId(documentId);
 
-            BaseXClient client = BaseXClient.getClient();
-            BaseXClient.Query q = client.preparedQuery("for $b in collection()/TEI\n" +
-                    "where db:node-id($b)=%d\n" +
-                    "return $b", documentId);
-            String document = q.next();
-            if(document == null) {
-                throw new RuntimeException("Document not found");
-            }
             switch(downloadType) {
                 default:
                 case "html":
@@ -39,18 +29,17 @@ public class GetDocument extends HttpServlet {
                         response.setHeader("Content-Disposition", "attachment;filename=document.html");
                     }
                     try {
-                        DocumentRenderer.simpleTransform(document, new WriterOutputStream(response.getWriter()));
-                    } catch (TransformerException e) {
-                        throw new RuntimeException("Error rendering document");
+                        response.getWriter().print(document.renderHTML());
+                    } catch(TransformerException e) {
+                        e.printStackTrace();
                     }
-
                     break;
                 case "xml":
                     if(forceDownload) {
                         response.setHeader("Content-Disposition", "attachment;filename=document.xml");
                     }
                     response.setHeader("content-type", "application/xml");
-                    response.getWriter().print(document);
+                    response.getWriter().print(document.getXmlData());
                     break;
             }
         } catch (NumberFormatException e) {

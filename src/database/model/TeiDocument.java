@@ -1,11 +1,23 @@
 package database.model;
 
 import database.client.BaseXClient;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import util.DocumentRenderer;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.StringWriter;
 
 public class TeiDocument {
     private String title;
@@ -14,7 +26,15 @@ public class TeiDocument {
     private String fileName;
     private String xmlData = "";
 
+    private static Transformer transformer;
 
+    static {
+        try {
+            transformer = TransformerFactory.newInstance().newTransformer();
+        } catch (TransformerConfigurationException e) {
+            throw new RuntimeException("Could not get transformer");
+        }
+    }
     public static TeiDocument fromId(int documentId) throws IOException {
         BaseXClient client = BaseXClient.getClient();
         String documentQuery = String.format("db:node-id($x) = %d", documentId);
@@ -24,14 +44,44 @@ public class TeiDocument {
                     "<title>{$x/teiHeader//title/string()}</title>\n" +
                     "<date>{$x/teiHeader//date/string()}</date>\n" +
                     "<filename>{file:name(fn:base-uri($x))}</filename>\n" +
+                    "<xmldata>{$x}</xmldata>\n" +
                 "</data>", documentQuery);
-        TeiDocument document = new TeiDocument();
-        Document dom = Jsoup.parse(q.next(), "", Parser.xmlParser());
-        document.id = Integer.parseInt(dom.getElementsByTag("id").first().text());
-        document.title = dom.getElementsByTag("title").first().text();
-        document.date = dom.getElementsByTag("date").first().text();
-        document.fileName = dom.getElementsByTag("filename").first().text();
-        return document;
+        return fromSearchResuls(q);
+    }
+
+    public static TeiDocument fromSearchResuls(BaseXClient.Query q) throws IOException {
+        if(q.more()) {
+
+
+            Document document;
+            try {
+                DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+                document = documentBuilder.parse(new ByteArrayInputStream(q.next().getBytes()));
+            } catch (ParserConfigurationException | SAXException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Could not get document builder");
+            }
+
+
+            String id = document.getElementsByTagName("id").item(0).getTextContent();
+            String title = document.getElementsByTagName("title").item(0).getTextContent();
+            String date = document.getElementsByTagName("date").item(0).getTextContent();
+            String filename = document.getElementsByTagName("filename").item(0).getTextContent();
+
+            DOMSource source = new DOMSource(document.getElementsByTagName("xmldata").item(0).getChildNodes().item(1));
+
+            StringWriter stringWriter = new StringWriter();
+            StreamResult result = new StreamResult(stringWriter);
+            try {
+                transformer.transform(source, result);
+            } catch (TransformerException e) {
+                throw new RuntimeException("Could not generate XML");
+            }
+            String xmlData = stringWriter.toString();
+
+            return new TeiDocument(title, date, Integer.parseInt(id), filename, xmlData);
+        }
+        return null;
     }
 
     public TeiDocument(String title, String date, int id, String fileName, String xmlData) {
@@ -47,6 +97,12 @@ public class TeiDocument {
     public String getTitle() {
 
         return title;
+    }
+
+    public String renderHTML() throws IOException, TransformerException {
+        ByteArrayOutputStream string = new ByteArrayOutputStream();
+        DocumentRenderer.simpleTransform(getXmlData(), string);
+        return string.toString("utf-8");
     }
 
     public void setTitle(String title) {

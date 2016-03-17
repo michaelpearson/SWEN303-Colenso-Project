@@ -12,6 +12,7 @@
     <servlet>
         <servlet-name>GetDocument</servlet-name>
         <servlet-class>api.GetDocument</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
         <servlet-name>AddDocument</servlet-name>
