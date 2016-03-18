@@ -3,11 +3,18 @@ $(function () {
         app.renderPage();
     }).trigger('hashchange');
 });
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+    var rest = this.slice((to || from) + 1 || this.length);
+    this.length = from < 0 ? this.length + from : from;
+    return this.push.apply(this, rest);
+};
+
 var pages = window.pages || {};
 var app = {
     disableNavigation : false,
-    decodeHash : function()
-    {
+    decodeHash : function() {
         try {
             var hash = window.location.hash.match(/^#?(.+)$/)[1];
         } catch (e) {
@@ -22,7 +29,16 @@ var app = {
                 continue;
             }
             if (a < arguments.length - 1) {
-                argumentMap[decodeURIComponent(arguments[a])] = decodeURIComponent(arguments[a + 1]);
+                var key = decodeURIComponent(arguments[a]);
+                var value = decodeURIComponent(arguments[a + 1]);
+                if(argumentMap[key]) {
+                    if(!Array.isArray(argumentMap[key])) {
+                        argumentMap[key] = [argumentMap[key]];
+                    }
+                    argumentMap[key].push(value);
+                } else {
+                    argumentMap[key] = value;
+                }
                 a++;
             }
         }
@@ -38,7 +54,13 @@ var app = {
             if (!pageArguments.hasOwnProperty(k)) {
                 continue;
             }
-            hash += '/' + k + '/' + encodeURIComponent(pageArguments[k]);
+            if(Array.isArray(pageArguments[k])) {
+                for(var a = 0;a < pageArguments[k].length;a++) {
+                    hash += '/' + k + '/' + encodeURIComponent(pageArguments[k][a]);
+                }
+            } else {
+                hash += '/' + k + '/' + encodeURIComponent(pageArguments[k]);
+            }
         }
         if (setHash) {
             window.location.hash = hash;

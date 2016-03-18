@@ -58,7 +58,7 @@ div.title {
 
 }
 
-.input, #search-input, #search-input * {
+.input, .search-input, .search-input * {
     width: 100%;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -110,8 +110,8 @@ tr:hover {
     padding-top: 30px;
 }
 .hidden-file-input {
-    width: 0px;
-    height: 0px;
+    width: 0;
+    height: 0;
     overflow: hidden;
 }
 
@@ -121,4 +121,13 @@ tr:hover {
 #formUpload button, #formUpload input {
     margin-top:10px;
     margin-bottom:10px;
+}
+
+.search-box-controls {
+    margin-top: 15px;
+}
+
+.nested-search-container {
+    margin-top: 15px;
+    margin-bottom: 15px;
 }

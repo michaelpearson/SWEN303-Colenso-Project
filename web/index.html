@@ -55,24 +55,21 @@
                     <div class="title">
                         <h1>Search</h1>
                     </div>
-                    <div class="search-box">
-                        <div class="ui right labeled input action">
-                            <div id="search-input">
-                                <input type="text" placeholder="Search term">
-                            </div>
-                            <div class="ui right labeled input action button-container">
-                                <div class="ui dropdown label">
-                                    <div class="text" id="search-type">Simple search</div>
-                                    <i class="dropdown icon"></i>
-                                    <div class="menu">
-                                        <div class="item">Simple search</div>
-                                        <div class="item">Logical search</div>
-                                        <div class="item">XQuery search</div>
-                                    </div>
-                                </div>
-                                <button class="ui button primary" id="button-search">Search</button>
-                            </div>
-                        </div>
+                    <div class="search-box" id="search-box"></div>
+                    <div class="search-box-controls center">
+                        <button class="ui button primary labeled icon" id="search-nested-add">
+                            <i class="add icon"></i>
+                            Add nested search
+                        </button>
+                        <button class="ui button red labeled icon" id="search-nested-remove">
+                            <i class="remove icon"></i>
+                            Remove nested search
+                        </button>
+                        <button class="ui button green labeled icon" id="search-submit">
+                            <i class="search icon"></i>
+                            Search
+                        </button>
+
                     </div>
                     <br />
                     <div class="results">

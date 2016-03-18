@@ -4,7 +4,8 @@ function searchDocument(searchType, searchQuery, pageIndex, pageCount, callback,
             type : searchType || "",
             query : searchQuery || "",
             page: pageIndex || 1,
-            count : pageCount || 50
+            count : pageCount || 50,
+            chained : Array.isArray(searchQuery) ? "1" : "0"
         },
         success : callback || function () {},
         statusCode : {

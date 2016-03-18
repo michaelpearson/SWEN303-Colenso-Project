@@ -41,8 +41,12 @@ public class SearchDocuments extends HttpServlet {
         } else {
             String searchType = request.getParameter("type");
             String searchQuery = request.getParameter("query");
-            searchQuery = searchQuery == null ? "" : searchQuery;
-            searchChain.addSearch(new Search(searchType, searchQuery));
+            if(searchType != null) {
+                searchQuery = searchQuery == null ? "" : searchQuery;
+                searchChain.addSearch(new Search(searchType, searchQuery));
+            } else {
+                throw new RuntimeException("Invalid arguments");
+            }
         }
         int page = tryParseInt(request.getParameter("page"), 1) - 1;
         int count = tryParseInt(request.getParameter("count"), 0);

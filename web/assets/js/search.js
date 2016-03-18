@@ -6,8 +6,18 @@ pages.search = {
     documentCache : [],
     queryResultCount : 0,
     queryResultAllId : "",
-    queryValue : function (val) {
-        var el = $('#search-input *');
+    nestedSearchElements : [],
+    nestedSearchElementHtmlTemplate : '<div class="ui right labeled input action nested-search-container">\n    <div class="search-input">\n        <input type="text" placeholder="Search term">\n    </div>\n    <div class="ui right labeled input action button-container">\n        <div class="ui dropdown label">\n            <div class="text search-type-selector">Simple search</div>\n                <i class="dropdown icon"></i>\n                <div class="menu">\n                <div class="item">Simple search</div>\n                <div class="item">Logical search</div>\n                <div class="item">XQuery search</div>\n            </div>\n        </div>\n        <!--\n        <button class="ui button primary" id="button-search">Search</button>\n        -->\n    </div>\n</div>',
+    queryValue : function (nestedIndex, val) {
+        var me = pages.search;
+        if(nestedIndex === undefined) {
+            var build = [];
+            for(var a = 0;a < me.nestedSearchElements.length;a++) {
+                build.push(me.queryValue(a));
+            }
+            return build;
+        }
+        var el = me.nestedSearchElements[nestedIndex].find('.search-input *');
         if(val === undefined) {
             if(el[0].tagName == "DIV") {
                 return el.text();
@@ -22,8 +32,16 @@ pages.search = {
             }
         }
     },
-    queryType : function () {
-        var type = $('#search-type').text();
+    queryType : function (nestedIndex) {
+        var me = pages.search;
+        if(nestedIndex === undefined) {
+            var build = [];
+            for(var a = 0;a < me.nestedSearchElements.length;a++) {
+                build.push(me.queryType(a));
+            }
+            return build;
+        }
+        var type = me.nestedSearchElements[nestedIndex].find('.search-type-selector').text();
         switch(type) {
             default:
             case 'Simple search':
@@ -45,37 +63,42 @@ pages.search = {
         return pages.search.pageNumber;
     },
     decodePageArguments : function (pageArguments) {
-        var type;
-        if(pageArguments.type) {
-            switch(pageArguments.type) {
-                default:
-                    pageArguments.type = "Simple search";
-                    break;
-                case 'xquery':
-                    type = "XQuery search";
-                    break;
-                case 'logical':
-                    type = "Logical search";
-                    break;
-            }
-        } else {
-            type = "Simple search";
+        var me = pages.search;
+        if(!Array.isArray(pageArguments.type)) {
+            pageArguments.type = [pageArguments.type];
+            pageArguments.query = [pageArguments.query];
         }
-        $('#search-type').text(type);
-        pages.search.updateSearchBox();
-        pages.search.queryValue(pageArguments.query || "");
-        if(pageArguments.count) {
+        for(var a = 0;a < pageArguments.type.length; a++) {
+            var type;
+            if (pageArguments.type[a]) {
+                switch (pageArguments.type[a]) {
+                    default:
+                        type = "Simple search";
+                        break;
+                    case 'xquery':
+                        type = "XQuery search";
+                        break;
+                    case 'logical':
+                        type = "Logical search";
+                        break;
+                }
+            } else {
+                type = "Simple search";
+            }
+            me.addNestedSearch(type, pageArguments.query[a] || "");
+        }
+        if (pageArguments.count) {
             $('.page-size').children().each(function () {
-                if($(this).text() == pageArguments.count) {
+                if ($(this).text() == pageArguments.count) {
                     $(this).addClass("active");
                 } else {
                     $(this).removeClass("active");
                 }
-                return(true);
+                return (true);
             });
         }
-        if(!pageArguments.page) {
-            pages.search.pageNumber = 1;
+        if (!pageArguments.page) {
+            me.pageNumber = 1;
         }
     },
     populateResults : function () {
@@ -132,35 +155,64 @@ pages.search = {
         var query = this.queryValue();
         return "/api/search?type=" + encodeURIComponent(queryType) + "&query=" + encodeURIComponent(query) + "&download=1";
     },
-    updateSearchBox : function (value) {
-        var searchContainer = $('#search-input');
-        var query = pages.search.queryValue();
-        var type = value || pages.search.queryType();
+    updateSearchBox : function (nestedIndex) {
+        var me = pages.search;
+        var element = me.nestedSearchElements[nestedIndex];
+        var searchContainer = element.find('.search-input');
+        var query = me.queryValue(nestedIndex);
+        var type = me.queryType(nestedIndex);
         searchContainer.children().remove();
         if(type.indexOf("xquery") > -1) {
-            searchContainer.append('<div placeholder="Search term" class="input" contenteditable="true"></div>');
+            searchContainer.append('<div class="input" contenteditable="true"></div>');
         } else {
             var el = searchContainer.append('<input type="text" placeholder="Search term" id="search-input">');
             el.off("keydown");
             el.keydown(function (event) {
                 if(event.keyCode == 13) {
-                    pages.search.pageNumber = 1;
-                    pages.search.submit();
+                    me.pageNumber = 1;
+                    me.submit();
                 }
             });
         }
-        pages.search.queryValue(query);
+        me.queryValue(nestedIndex, query);
+    },
+    addNestedSearch : function (type, query) {
+        type = type || "Simple Search";
+        query = query || "";
+
+        console.log("TODO");
+        var searchContainer = $('#search-box');
+        var me = pages.search;
+        var index = me.nestedSearchElements.length;
+        me.nestedSearchElements[index] = $(me.nestedSearchElementHtmlTemplate);
+        $(me.nestedSearchElements[index].find('.dropdown')).dropdown({
+            onHide : me.updateSearchBox.bind(pages.search, index)
+        });
+        searchContainer.append(me.nestedSearchElements[index]);
+        me.updateSearchBox(index);
+    },
+    removeNestedSearch : function (force) {
+        var me = pages.search;
+        var index = me.nestedSearchElements.length - 1;
+        if(index > 0 || force === true) {
+            me.nestedSearchElements[index].remove();
+            me.nestedSearchElements.remove(index);
+        }
     },
     initControls : function () {
+        var me = pages.search;
+        while(me.nestedSearchElements.length > 0) {
+            me.removeNestedSearch(true);
+        }
         if(pages.search.init) {
             return;
         }
         pages.search.init = true;
-        $('.ui.dropdown').dropdown({
-            onChange : pages.search.updateSearchBox.bind(this)
-        });
 
-        $('#button-search').click(function () {
+        $('#search-nested-add').click(pages.search.addNestedSearch.bind(pages.search));
+        $('#search-nested-remove').click(pages.search.removeNestedSearch.bind(pages.search));
+
+        $('#search-submit').click(function () {
             pages.search.pageNumber = 1;
             pages.search.submit();
         });
