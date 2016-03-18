@@ -1,13 +1,7 @@
 package database.documents;
 
 import database.SearchQueryProcessor;
-import database.client.BaseXClient;
-import database.model.TeiDocument;
 import util.Strings;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Search {
     enum SearchType {
@@ -35,60 +29,30 @@ public class Search {
         this.query = query;
     }
 
-    public List<TeiDocument> executeQuery() throws IOException {
-        BaseXClient client = BaseXClient.getClient();
-        BaseXClient.Query q;
-        if(query.equals("")) {
-            q = client.query("for $x in collection()/TEI return " +
-                    "<data>" +
-                        "<id>{db:node-id($x)}</id>" +
-                        "<title>{$x/teiHeader//title/string()}</title>" +
-                        "<date>{$x/teiHeader//date/string()}</date>" +
-                        "<filename>{file:name(fn:base-uri($x))}</filename>" +
-                        "<xmldata>{$x}</xmldata>" +
-                    "</data>");
+    public String getPreparedQuery() {
+        return getPreparedQuery("collection()");
+    }
+
+
+    public String getPreparedQuery(String datasource) {
+        if (query.equals("")) {
+            return datasource;
         } else {
+            String q;
             switch (searchType) {
                 default:
                 case FULLTEXT:
-                    q = client.preparedQuery("for $x in collection()/TEI where $x//text() contains text \"%s\" using fuzzy return " +
-                            "<data>" +
-                                "<id>{db:node-id($x)}</id>" +
-                                "<title>{$x/teiHeader//title/string()}</title>" +
-                                "<date>{$x/teiHeader//date/string()}</date>" +
-                                "<filename>{file:name(fn:base-uri($x))}</filename>" +
-                                "<xmldata>{$x}</xmldata>" +
-                            "</data>", Strings.addSlashes(query));
+                    q = String.format("for $x in (%s) where $x//text() contains text \"%s\" using fuzzy return $x", datasource, Strings.addSlashes(query));
                     break;
                 case XQUERY:
-                    q = client.preparedQuery("for $x in collection()/TEI where $x%s return " +
-                            "<data>" +
-                                "<id>{db:node-id($x)}</id>" +
-                                "<title>{$x/teiHeader//title/string()}</title>" +
-                                "<date>{$x/teiHeader//date/string()}</date>" +
-                                "<filename>{file:name(fn:base-uri($x))}</filename>" +
-                                "<xmldata>{$x}</xmldata>" +
-                            "</data>", Strings.addSlashes(query));
+                    q = String.format("for $x in (%s) where $x%s return $x", datasource, Strings.addSlashes(query));
                     break;
                 case LOGICAL:
                     String search = SearchQueryProcessor.processQuery(query);
-                    System.out.println(search);
-                    q = client.preparedQuery("for $x in collection()/TEI  where $x/string() contains text %s return " +
-                            "<data>" +
-                                "<id>{db:node-id($x)}</id>" +
-                                "<title>{$x/teiHeader//title/string()}</title>" +
-                                "<date>{$x/teiHeader//date/string()}</date>" +
-                                "<filename>{file:name(fn:base-uri($x))}</filename>" +
-                                "<xmldata>{$x}</xmldata>" +
-                            "</data>",  search);
+                    q = String.format("for $x in (%s) where $x/string() contains text %s return $x", datasource, search);
                     break;
             }
+            return q;
         }
-
-        List<TeiDocument> results = new ArrayList<>();
-        while (q.more()) {
-            results.add(TeiDocument.fromSearchResuls(q));
-        }
-        return results;
     }
 }

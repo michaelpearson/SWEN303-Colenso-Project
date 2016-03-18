@@ -1,13 +1,10 @@
 package api;
 
-import database.client.BaseXClient;
 import database.documents.Search;
+import database.documents.SearchChain;
 import database.model.TeiDocument;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.parser.Parser;
 import util.DocumentZip;
 import util.Response;
 
@@ -30,16 +27,29 @@ public class SearchDocuments extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String searchType = request.getParameter("type");
-        String searchQuery = request.getParameter("query");
+        SearchChain searchChain = new SearchChain();
+        if(request.getParameter("chained") != null && request.getParameter("chained").equals("1")) {
+            String[] searchTypes = request.getParameterValues("type[]");
+            String[] searchQueries = request.getParameterValues("query[]");
+            if(searchTypes != null && searchQueries != null && searchTypes.length == searchQueries.length) {
+                for(int a = 0;a < searchQueries.length;a++) {
+                    searchChain.addSearch(new Search(searchTypes[a], searchQueries[a]));
+                }
+            } else {
+                throw new RuntimeException("Invalid arguments");
+            }
+        } else {
+            String searchType = request.getParameter("type");
+            String searchQuery = request.getParameter("query");
+            searchQuery = searchQuery == null ? "" : searchQuery;
+            searchChain.addSearch(new Search(searchType, searchQuery));
+        }
         int page = tryParseInt(request.getParameter("page"), 1) - 1;
         int count = tryParseInt(request.getParameter("count"), 0);
         boolean download = "1".equals(request.getParameter("download"));
         int startIndex = page * count;
-        searchQuery = searchQuery == null ? "" : searchQuery;
 
-        Search search = new Search(searchType, searchQuery);
-        List<TeiDocument> searchResults = search.executeQuery();
+        List<TeiDocument> searchResults = searchChain.executeSearch();
 
         if(download) {
             DocumentZip.writeDocumentToStream(searchResults, response.getOutputStream());
