@@ -1,6 +1,8 @@
 package database.model;
 
 import database.client.BaseXClient;
+import database.documents.Search;
+import database.documents.SearchChain;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import util.DocumentRenderer;
@@ -18,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.util.List;
 
 public class TeiDocument {
     private String title;
@@ -36,23 +39,17 @@ public class TeiDocument {
         }
     }
     public static TeiDocument fromId(int documentId) throws IOException {
-        BaseXClient client = BaseXClient.getClient();
-        String documentQuery = String.format("db:node-id($x) = %d", documentId);
-        BaseXClient.Query q = client.preparedQuery("for $x in /TEI where %s return " +
-                "<data>" +
-                    "<id>{db:node-id($x)}</id>\n" +
-                    "<title>{$x/teiHeader//title/string()}</title>\n" +
-                    "<date>{$x/teiHeader//date/string()}</date>\n" +
-                    "<filename>{file:name(fn:base-uri($x))}</filename>\n" +
-                    "<xmldata>{$x}</xmldata>\n" +
-                "</data>", documentQuery);
-        return fromSearchResuls(q);
+        SearchChain sc = new SearchChain();
+        sc.addSearch(new Search("id", String.format("%d", documentId)));
+        List<TeiDocument> documents = sc.executeSearch();
+        if(documents.size() == 1) {
+            return documents.get(0);
+        }
+        return null;
     }
 
     public static TeiDocument fromSearchResuls(BaseXClient.Query q) throws IOException {
         if(q.more()) {
-
-
             Document document;
             try {
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -61,7 +58,6 @@ public class TeiDocument {
                 e.printStackTrace();
                 throw new RuntimeException("Could not get document builder");
             }
-
 
             String id = document.getElementsByTagName("id").item(0).getTextContent();
             String title = document.getElementsByTagName("title").item(0).getTextContent();

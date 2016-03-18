@@ -8,6 +8,7 @@ public class Search {
         FULLTEXT,
         XQUERY,
         LOGICAL,
+        ID
     }
 
     private SearchType searchType;
@@ -24,6 +25,9 @@ public class Search {
                 break;
             case "logical":
                 searchType = SearchType.LOGICAL;
+                break;
+            case "id":
+                searchType = SearchType.ID;
                 break;
         }
         this.query = query;
@@ -50,6 +54,9 @@ public class Search {
                 case LOGICAL:
                     String search = SearchQueryProcessor.processQuery(query);
                     q = String.format("for $x in (%s) where $x/string() contains text %s return $x", datasource, search);
+                    break;
+                case ID:
+                    q = String.format("for $x in (%s) where db:node-id($x) = %d return $x", datasource, Integer.parseInt(query));
                     break;
             }
             return q;
