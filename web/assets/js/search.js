@@ -13,7 +13,7 @@ pages.search = {
         if(nestedIndex === undefined) {
             var build = [];
             for(var a = 0;a < me.nestedSearchElements.length;a++) {
-                build.push(me.queryValue(a));
+                build.push(me.queryValue(a, val));
             }
             return build;
         }
@@ -26,35 +26,48 @@ pages.search = {
             }
         } else {
             if(el[0].tagName == "DIV") {
-                return el.text(val);
+                return el.text(val).text();
             } else {
-                return el.val(val);
+                return el.val(val).val();
             }
         }
     },
-    queryType : function (nestedIndex) {
+    queryType : function (nestedIndex, val) {
         var me = pages.search;
         if(nestedIndex === undefined) {
             var build = [];
             for(var a = 0;a < me.nestedSearchElements.length;a++) {
-                build.push(me.queryType(a));
+                build.push(me.queryType(a, val));
             }
             return build;
         }
-        var type = me.nestedSearchElements[nestedIndex].find('.search-type-selector').text();
-        switch(type) {
+        if(val) {
+            var type = me.typeValueToLabel(val);
+            me.nestedSearchElements[nestedIndex].find('.search-type-selector').html(type);
+            //me.updateSearchBox(nestedIndex)
+        }
+        return me.typeLabelToValue(me.nestedSearchElements[nestedIndex].find('.search-type-selector').text());
+    },
+    typeLabelToValue : function (label) {
+        switch(label) {
             default:
             case 'Simple search':
-                type = 'fulltext';
-                break;
+                return 'fulltext';
             case 'Logical search':
-                type = 'logical';
-                break;
+                return 'logical';
             case 'XQuery search':
-                type = 'xquery';
-                break;
+                return 'xquery';
         }
-        return type;
+    },
+    typeValueToLabel : function (value) {
+        switch (value) {
+            default:
+                return "Simple search";
+            case 'xquery':
+                return "XQuery search";
+            case 'logical':
+                return "Logical search";
+        }
     },
     getPageSize : function () {
         return parseInt($('.page-size button.active').text()) || 50;
@@ -69,23 +82,7 @@ pages.search = {
             pageArguments.query = [pageArguments.query];
         }
         for(var a = 0;a < pageArguments.type.length; a++) {
-            var type;
-            if (pageArguments.type[a]) {
-                switch (pageArguments.type[a]) {
-                    default:
-                        type = "Simple search";
-                        break;
-                    case 'xquery':
-                        type = "XQuery search";
-                        break;
-                    case 'logical':
-                        type = "Logical search";
-                        break;
-                }
-            } else {
-                type = "Simple search";
-            }
-            me.addNestedSearch(type, pageArguments.query[a] || "");
+            me.addNestedSearch(pageArguments.type[a] || me.typeLabelToValue(), pageArguments.query[a] || "");
         }
         if (pageArguments.count) {
             $('.page-size').children().each(function () {
@@ -125,8 +122,7 @@ pages.search = {
         }
         pages.search.syncPagingControls();
     },
-    runQuery : function (download) {
-        download = download === true;
+    runQuery : function () {
         var queryType = this.queryType();
         var query = this.queryValue();
         searchDocument(queryType, query, pages.search.getPageNumber(), pages.search.getPageSize(), function (documents) {
@@ -153,16 +149,24 @@ pages.search = {
     getDownloadLink : function () {
         var queryType = this.queryType();
         var query = this.queryValue();
-        return "/api/search?type=" + encodeURIComponent(queryType) + "&query=" + encodeURIComponent(query) + "&download=1";
+        if(Array.isArray(queryType)) {
+            var url = "/api/search?chained=1&download=1";
+            for(var a = 0;a < queryType.length;a++) {
+                url += "&type[]=" + encodeURIComponent(queryType[a]) + "&query[]=" + encodeURIComponent(query[a]);
+            }
+            return url;
+        } else {
+            return "/api/search?type=" + encodeURIComponent(queryType) + "&query=" + encodeURIComponent(query) + "&download=1";
+        }
     },
-    updateSearchBox : function (nestedIndex) {
+    updateSearchBox : function (nestedIndex, query, type) {
         var me = pages.search;
         var element = me.nestedSearchElements[nestedIndex];
         var searchContainer = element.find('.search-input');
-        var query = me.queryValue(nestedIndex);
-        var type = me.queryType(nestedIndex);
+        query = query || me.queryValue(nestedIndex);
+        type = type || me.queryType(nestedIndex);
         searchContainer.children().remove();
-        if(type.indexOf("xquery") > -1) {
+        if(type == "xquery") {
             searchContainer.append('<div class="input" contenteditable="true"></div>');
         } else {
             var el = searchContainer.append('<input type="text" placeholder="Search term" id="search-input">');
@@ -175,21 +179,21 @@ pages.search = {
             });
         }
         me.queryValue(nestedIndex, query);
+        me.queryType(nestedIndex, type);
     },
     addNestedSearch : function (type, query) {
-        type = type || "Simple Search";
+        var me = pages.search;
+        type = type || me.typeLabelToValue();
         query = query || "";
 
-        console.log("TODO");
         var searchContainer = $('#search-box');
-        var me = pages.search;
         var index = me.nestedSearchElements.length;
         me.nestedSearchElements[index] = $(me.nestedSearchElementHtmlTemplate);
         $(me.nestedSearchElements[index].find('.dropdown')).dropdown({
             onHide : me.updateSearchBox.bind(pages.search, index)
         });
         searchContainer.append(me.nestedSearchElements[index]);
-        me.updateSearchBox(index);
+        me.updateSearchBox(index, query, type);
     },
     removeNestedSearch : function (force) {
         var me = pages.search;
