@@ -25,3 +25,13 @@ function getDocument(documentId, callback) {
         success : callback || function () {}
     });
 }
+
+function getDocumentXml(documentId, callback) {
+    $.ajax("/api/document", {
+        data : {
+            documentId : documentId || "",
+            type : "xml"
+        },
+        success : callback || function () {}
+    });
+}

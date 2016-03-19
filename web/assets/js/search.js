@@ -76,6 +76,7 @@ pages.search = {
         return pages.search.pageNumber;
     },
     decodePageArguments : function (pageArguments) {
+        console.log(pageArguments);
         var me = pages.search;
         if(!Array.isArray(pageArguments.type)) {
             pageArguments.type = [pageArguments.type];
@@ -108,6 +109,7 @@ pages.search = {
             var row = $('<tr></tr>');
             var title = $('<td><a></a></td>');
             var date = $('<td></td>');
+            var options = $('<td class="option-panel"><a href="#/edit/id/' + documents[a].id + '"><i class="icon edit"></i></a></td>');
 
             var href = app.encodeHash("document", {
                 id : documents[a].id,
@@ -117,7 +119,7 @@ pages.search = {
 
             date.text(documents[a].date);
 
-            row.append(title, date);
+            row.append(title, date, options);
             resultBody.append(row);
         }
         pages.search.syncPagingControls();
@@ -244,7 +246,7 @@ pages.search = {
         $('#search.page').css({
             display : 'block'
         });
-        $('.documents-found').text("");
+        //$('.documents-found').text("");
         pages.search.pageNumer = arguments.page || 1;
         pages.search.completeCallback = renderCompleteCallback;
         pages.search.initControls(arguments);

@@ -3,14 +3,12 @@ $(function () {
         app.renderPage();
     }).trigger('hashchange');
 });
-
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
     var rest = this.slice((to || from) + 1 || this.length);
     this.length = from < 0 ? this.length + from : from;
     return this.push.apply(this, rest);
 };
-
 var pages = window.pages || {};
 var app = {
     disableNavigation : false,
@@ -31,7 +29,7 @@ var app = {
             if (a < arguments.length - 1) {
                 var key = decodeURIComponent(arguments[a]);
                 var value = decodeURIComponent(arguments[a + 1]);
-                if(argumentMap[key]) {
+                if(argumentMap[key] !== undefined) {
                     if(!Array.isArray(argumentMap[key])) {
                         argumentMap[key] = [argumentMap[key]];
                     }

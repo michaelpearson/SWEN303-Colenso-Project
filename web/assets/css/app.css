@@ -131,3 +131,25 @@ tr:hover {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+
+.option-panel > i {
+    visibility: hidden;
+}
+td.option-panel {
+    text-align: center !important;
+    font-size: 20px;
+}
+
+tr:hover > .option-panel i {
+    visibility: visible;
+}
+
+textarea#xml-document {
+    width: 100%;
+    height: 1200px;
+    resize: none;
+}
+.CodeMirror {
+    border: 1px solid #eee;
+    height: 600px !important;
+}

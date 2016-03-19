@@ -18,6 +18,10 @@
         <servlet-name>AddDocument</servlet-name>
         <servlet-class>api.AddDocument</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SaveDocument</servlet-name>
+        <servlet-class>api.SaveDocument</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -35,5 +39,9 @@
     <servlet-mapping>
         <servlet-name>AddDocument</servlet-name>
         <url-pattern>/api/addDocument</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveDocument</servlet-name>
+        <url-pattern>/api/saveDocument</url-pattern>
     </servlet-mapping>
 </web-app>
