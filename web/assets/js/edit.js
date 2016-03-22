@@ -29,34 +29,65 @@ pages.edit = {
             $.ajax("/api/saveDocument?id=" + me.documentId, {
                 method : "post",
                 data : {
-                    xml : "Test data"
+                    xml : me.codeMirrorObject.getValue()
                 }
             });
         });
         me.textAreaElement = $('#xml-document');
         me.codeMirrorObject = CodeMirror(me.textAreaElement[0], {
             viewportMargin : Infinity,
-            lineNumbers: true
+            lineNumbers: true,
+            lint : {
+                getAnnotations : function (documents, callback) {
+                    validateXmlDocument(documents, function (response) {
+                        var build = [];
+                        function addError(severity, line, message) {
+                            build.push({
+                                message: message,
+                                severity: severity,
+                                from : {
+                                    line : line - 2
+                                },
+                                to : {
+                                    line : line - 1
+                                }
+                            });
+                        }
+                        for(var a = 0;a < response.errors.length;a++) {
+                            addError("error", response.errors[a].lineNumber, response.errors[a].description);
+                        }
+                        for(var a = 0;a < response.fatalErrors.length;a++) {
+                            addError("error", response.fatalErrors[a].lineNumber, response.fatalErrors[a].description);
+                        }
+                        for(var a = 0;a < response.warnings.length;a++) {
+                            addError("error", response.warnings[a].lineNumber, response.warnings[a].description);
+                        }
+                        console.log(build);
+                        callback(build);
+                    });
+                },
+                async : true
+            }
         });
     },
     populateTextArea : function (document) {
         var me = pages.edit;
-        var xml;
+        var xml = document;
+        /*
         try {
             var processor = new XSLTProcessor();
             var xsl = new DOMParser().parseFromString("<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n    <xsl:output omit-xml-declaration=\"yes\" indent=\"yes\"/>\n    <xsl:template match=\"node()|@*\">\n        <xsl:copy>\n            <xsl:apply-templates select=\"node()|@*\"/>\n        </xsl:copy>\n    </xsl:template>\n</xsl:stylesheet>", "text/xml");
             processor.importStylesheet(xsl);
-            var result = processor.transformToFragment(document, window.document);
-            xml = '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(result);
+            xml = new DOMParser().parseFromString(document, "text/xml");
+            var result = processor.transformToFragment(xml, window.document);
+            xml = new XMLSerializer().serializeToString(result);
         } catch (e) {
-            xml = new XMLSerializer().serializeToString(document);
-        }
+            console.log(e);
+        }*/
+
         me.codeMirrorObject.setValue(xml);
         if(me.renderCompleteCallback !== null) {
             me.renderCompleteCallback();
         }
-    },
-    getTextAreaContent : function () {
-
     }
 };

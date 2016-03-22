@@ -21,7 +21,7 @@ public class DocumentRenderer {
         }
     }
 
-    public static void simpleTransform(String inputDocument, OutputStream outputStream) throws TransformerException, IOException {
+    public synchronized static void simpleTransform(String inputDocument, OutputStream outputStream) throws TransformerException, IOException {
         transformer.transform(new StreamSource(new StringReader(inputDocument)), new StreamResult(outputStream));
     }
 }

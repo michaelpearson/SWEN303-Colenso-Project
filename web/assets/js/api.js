@@ -32,6 +32,18 @@ function getDocumentXml(documentId, callback) {
             documentId : documentId || "",
             type : "xml"
         },
+        dataType: "text",
         success : callback || function () {}
+    });
+}
+
+function validateXmlDocument(xml, callback) {
+    $.ajax("/api/saveDocument", {
+        method : "post",
+        data : {
+            xml : xml,
+            save : "0"
+        },
+        success : callback
     });
 }
