@@ -47,3 +47,14 @@ function validateXmlDocument(xml, callback) {
         success : callback
     });
 }
+
+function updateXmlDocument(xml, id, callback) {
+    $.ajax("/api/saveDocument?id=" + id + "&save=1", {
+        method : "post",
+        data : {
+            xml : xml
+        },
+        success : callback.bind(callback, true),
+        error : callback.bind(callback, false)
+    });
+}

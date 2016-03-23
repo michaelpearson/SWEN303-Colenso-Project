@@ -45,7 +45,7 @@ public class TeiDocument {
         if(documents.size() == 1) {
             return documents.get(0);
         }
-        return null;
+        throw new RuntimeException("Could not find document " + documentId);
     }
 
     public static TeiDocument fromSearchResuls(BaseXClient.Query q) throws IOException {
@@ -78,6 +78,16 @@ public class TeiDocument {
             return new TeiDocument(title, date, Integer.parseInt(id), filename, xmlData);
         }
         return null;
+    }
+
+    public void update() throws IOException {
+        BaseXClient client = BaseXClient.getClient();
+        String query = "for $x in collection() where db:node-id($x) = %d return replace node $x/TEI with %s";
+        query = String.format(query, getId(), getXmlData().replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", ""));
+        //I know the replace is crap but time constraints.
+        //TODO: remove replace and parse the document properly.
+        client.preparedQuery(query);
+        client.close();
     }
 
     public TeiDocument(String title, String date, int id, String fileName, String xmlData) {

@@ -4,6 +4,7 @@ import com.thaiopensource.util.PropertyMapBuilder;
 import com.thaiopensource.validate.ValidateProperty;
 import com.thaiopensource.validate.ValidationDriver;
 import com.thaiopensource.validate.auto.AutoSchemaReader;
+import database.model.TeiDocument;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.xml.sax.ErrorHandler;
@@ -60,10 +61,15 @@ public class SaveDocument extends HttpServlet {
         InputSource inXml = new InputSource(new ByteArrayInputStream(xml.getBytes()));
         inXml.setEncoding("UTF-8");
         ValidationDriver driver = new ValidationDriver(builder.toPropertyMap(), new AutoSchemaReader());
-        boolean isValid = false;
+        boolean isValid;
         try {
             driver.loadSchema(inRng);
             isValid = driver.validate(inXml);
+            if(isValid && save) {
+                TeiDocument document = TeiDocument.fromId(documentId);
+                document.setXmlData(xml);
+                document.update();
+            }
         } catch (SAXException e) {
             isValid = false;
         }
@@ -74,6 +80,7 @@ public class SaveDocument extends HttpServlet {
         response.put("fatalErrors", fatalErrors);
         response.put("warnings", warnings);
         response.put("valid", isValid);
+        response.put("saved", isValid && save);
         Response.writeJsonResponse(response, resp);
     }
     private void addExceptionToResponse(JSONArray parent, SAXParseException e) {
@@ -82,6 +89,5 @@ public class SaveDocument extends HttpServlet {
         obj.put("description", e.getMessage());
         parent.add(obj);
     }
-
 
 }

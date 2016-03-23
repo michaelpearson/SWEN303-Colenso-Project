@@ -26,11 +26,8 @@ pages.edit = {
         }
         me.initComplete = true;
         $('#edit.page').find('.btn-save').click(function () {
-            $.ajax("/api/saveDocument?id=" + me.documentId, {
-                method : "post",
-                data : {
-                    xml : me.codeMirrorObject.getValue()
-                }
+            updateXmlDocument(me.codeMirrorObject.getValue(), me.documentId, function (success) {
+                alert(success ? "Saved successfully" : "Failed to save");
             });
         });
         me.textAreaElement = $('#xml-document');
@@ -62,7 +59,6 @@ pages.edit = {
                         for(var a = 0;a < response.warnings.length;a++) {
                             addError("error", response.warnings[a].lineNumber, response.warnings[a].description);
                         }
-                        console.log(build);
                         callback(build);
                     });
                 },
@@ -72,20 +68,7 @@ pages.edit = {
     },
     populateTextArea : function (document) {
         var me = pages.edit;
-        var xml = document;
-        /*
-        try {
-            var processor = new XSLTProcessor();
-            var xsl = new DOMParser().parseFromString("<xsl:stylesheet version=\"1.0\" xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">\n    <xsl:output omit-xml-declaration=\"yes\" indent=\"yes\"/>\n    <xsl:template match=\"node()|@*\">\n        <xsl:copy>\n            <xsl:apply-templates select=\"node()|@*\"/>\n        </xsl:copy>\n    </xsl:template>\n</xsl:stylesheet>", "text/xml");
-            processor.importStylesheet(xsl);
-            xml = new DOMParser().parseFromString(document, "text/xml");
-            var result = processor.transformToFragment(xml, window.document);
-            xml = new XMLSerializer().serializeToString(result);
-        } catch (e) {
-            console.log(e);
-        }*/
-
-        me.codeMirrorObject.setValue(xml);
+        me.codeMirrorObject.setValue(document);
         if(me.renderCompleteCallback !== null) {
             me.renderCompleteCallback();
         }
