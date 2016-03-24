@@ -1,4 +1,4 @@
-package api;
+package endpoints;
 
 import database.model.TeiDocument;
 
@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
-@WebServlet(name = "GetDocument")
 public class GetDocument extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");

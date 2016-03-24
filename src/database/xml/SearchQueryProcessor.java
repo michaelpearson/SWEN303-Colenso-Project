@@ -1,19 +1,17 @@
-package database;
+package database.xml;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SearchQueryProcessor {
-
-    private static Pattern tokenise = Pattern.compile("(?:\"([^\"]+)\"|([\\w*?'\\.]+)|(\\()|(\\)))");
-
+    private static Pattern tokenize = Pattern.compile("(?:\"([^\"]+)\"|([\\w*?'\\.]+)|(\\()|(\\)))");
 
     public static String processQuery(String query) {
 
         ArrayList<String> tokens = new ArrayList<>();
 
-        Matcher matcher = tokenise.matcher(query);
+        Matcher matcher = tokenize.matcher(query);
         while(matcher.find()) {
             tokens.add(matcher.group(1) == null ? matcher.group() : matcher.group(1));
         }
@@ -61,9 +59,5 @@ public class SearchQueryProcessor {
             return 2;
         }
         return 0;
-    }
-
-    public static void main(String[] argv) {
-        System.out.println(processQuery("a. and not and b and not \"cd\""));
     }
 }

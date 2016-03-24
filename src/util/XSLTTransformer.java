@@ -8,7 +8,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 
-public class DocumentRenderer {
+public class XSLTTransformer {
     private static Transformer transformer;
 
     static {
@@ -21,7 +21,7 @@ public class DocumentRenderer {
         }
     }
 
-    public synchronized static void simpleTransform(String inputDocument, OutputStream outputStream) throws TransformerException, IOException {
+    public synchronized static void transform(String inputDocument, OutputStream outputStream) throws TransformerException, IOException {
         transformer.transform(new StreamSource(new StringReader(inputDocument)), new StreamResult(outputStream));
     }
 }

@@ -1,9 +1,9 @@
-package api;
+package endpoints;
 
-import database.client.BaseXClient;
+import database.xml.client.BaseXClient;
 import org.basex.BaseXServer;
 import org.json.simple.JSONObject;
-import util.Response;
+import util.JsonResponse;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -36,6 +36,6 @@ public class GetBaseXStatus extends HttpServlet {
             resp.put("error", e.getMessage());
         }
         resp.put("success", success);
-        Response.writeJsonResponse(resp, response);
+        JsonResponse.writeJsonResponse(resp, response);
     }
 }

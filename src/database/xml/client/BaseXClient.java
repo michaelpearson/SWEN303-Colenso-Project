@@ -1,4 +1,4 @@
-package database.client;
+package database.xml.client;
 
 import util.ServerConfiguration;
 

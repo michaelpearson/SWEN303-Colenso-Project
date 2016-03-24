@@ -152,13 +152,13 @@ pages.search = {
         var queryType = this.queryType();
         var query = this.queryValue();
         if(Array.isArray(queryType)) {
-            var url = "/api/search?chained=1&download=1";
+            var url = "/endpoints/search?chained=1&download=1";
             for(var a = 0;a < queryType.length;a++) {
                 url += "&type[]=" + encodeURIComponent(queryType[a]) + "&query[]=" + encodeURIComponent(query[a]);
             }
             return url;
         } else {
-            return "/api/search?type=" + encodeURIComponent(queryType) + "&query=" + encodeURIComponent(query) + "&download=1";
+            return "/endpoints/search?type=" + encodeURIComponent(queryType) + "&query=" + encodeURIComponent(query) + "&download=1";
         }
     },
     updateSearchBox : function (nestedIndex, query, type) {

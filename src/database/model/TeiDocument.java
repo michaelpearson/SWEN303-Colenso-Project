@@ -1,11 +1,11 @@
 package database.model;
 
-import database.client.BaseXClient;
-import database.documents.Search;
-import database.documents.SearchChain;
+import database.xml.client.BaseXClient;
+import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import util.DocumentRenderer;
+import util.ServerConfiguration;
+import util.XSLTTransformer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.UUID;
 
 public class TeiDocument {
     private String title;
@@ -48,7 +49,7 @@ public class TeiDocument {
         throw new RuntimeException("Could not find document " + documentId);
     }
 
-    public static TeiDocument fromSearchResuls(BaseXClient.Query q) throws IOException {
+    @Nullable static TeiDocument fromSearchResults(BaseXClient.Query q) throws IOException {
         if(q.more()) {
             Document document;
             try {
@@ -95,12 +96,28 @@ public class TeiDocument {
         client.close();
     }
 
-    public TeiDocument(String title, String date, int id, String fileName, String xmlData) {
+    private TeiDocument(String title, String date, int id, String fileName, String xmlData) {
         this.title = title;
         this.date = date;
         this.id = id;
         this.fileName = fileName;
         this.xmlData = xmlData;
+    }
+
+    public static TeiDocument insertFromXml(String xml, String fileName) throws IOException {
+        BaseXClient client = BaseXClient.getClient();
+        String path = UUID.randomUUID().toString() + "/" + fileName;
+        System.out.println(client.preparedCommand("ADD to %s %s", path, xml));
+        TeiDocument document = null;
+        if(!xml.equals("")) {
+            BaseXClient.Query q = client.preparedQuery("db:open(\"%s\", \"%s\")/db:node-id(TEI)", ServerConfiguration.getConfigurationString("database", "name"), path);
+            String documentId = q.next();
+            if(documentId != null) {
+                document = fromId(Integer.valueOf(documentId));
+            }
+        }
+        client.close();
+        return document;
     }
 
     private TeiDocument() {}
@@ -112,7 +129,7 @@ public class TeiDocument {
 
     public String renderHTML() throws IOException, TransformerException {
         ByteArrayOutputStream string = new ByteArrayOutputStream();
-        DocumentRenderer.simpleTransform(getXmlData(), string);
+        XSLTTransformer.transform(getXmlData(), string);
         return string.toString("utf-8");
     }
 
@@ -138,10 +155,6 @@ public class TeiDocument {
 
     public String getFileName() {
         return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
     }
 
     public String getXmlData() {

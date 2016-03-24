@@ -1,4 +1,4 @@
-package api;
+package endpoints;
 
 import com.thaiopensource.util.PropertyMapBuilder;
 import com.thaiopensource.validate.ValidateProperty;
@@ -11,7 +11,7 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import util.Response;
+import util.JsonResponse;
 import util.ServerConfiguration;
 
 import javax.servlet.ServletException;
@@ -81,7 +81,7 @@ public class SaveDocument extends HttpServlet {
         response.put("warnings", warnings);
         response.put("valid", isValid);
         response.put("saved", isValid && save);
-        Response.writeJsonResponse(response, resp);
+        JsonResponse.writeJsonResponse(response, resp);
     }
     private void addExceptionToResponse(JSONArray parent, SAXParseException e) {
         JSONObject obj = new JSONObject();

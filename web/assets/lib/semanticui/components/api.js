@@ -557,7 +557,7 @@ $.api = $.fn.api = function(parameters) {
         create: {
 
           request: function() {
-            // api request promise
+            // endpoints request promise
             return $.Deferred()
               .always(module.event.request.complete)
               .done(module.event.request.done)
@@ -1042,7 +1042,7 @@ $.api.settings = {
     method            : 'The method you called is not defined',
     missingAction     : 'API action used but no url was defined',
     missingSerialize  : 'jquery-serialize-object is required to add form data to an existing data object',
-    missingURL        : 'No URL specified for api event',
+    missingURL        : 'No URL specified for endpoints event',
     noReturnedValue   : 'The beforeSend callback must return a settings object, beforeSend ignored.',
     noStorage         : 'Caching respopnses locally requires session storage',
     parseError        : 'There was an error parsing your request',

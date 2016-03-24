@@ -2,46 +2,46 @@
 <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1">
     <servlet>
         <servlet-name>DatabaseStatus</servlet-name>
-        <servlet-class>api.GetBaseXStatus</servlet-class>
+        <servlet-class>endpoints.GetBaseXStatus</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
         <servlet-name>SearchDocuments</servlet-name>
-        <servlet-class>api.SearchDocuments</servlet-class>
+        <servlet-class>endpoints.SearchDocuments</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetDocument</servlet-name>
-        <servlet-class>api.GetDocument</servlet-class>
+        <servlet-class>endpoints.GetDocument</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
         <servlet-name>AddDocument</servlet-name>
-        <servlet-class>api.AddDocument</servlet-class>
+        <servlet-class>endpoints.AddDocument</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>SaveDocument</servlet-name>
-        <servlet-class>api.SaveDocument</servlet-class>
+        <servlet-class>endpoints.SaveDocument</servlet-class>
     </servlet>
 
 
     <servlet-mapping>
         <servlet-name>DatabaseStatus</servlet-name>
-        <url-pattern>/api/status</url-pattern>
+        <url-pattern>/endpoints/status</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SearchDocuments</servlet-name>
-        <url-pattern>/api/search</url-pattern>
+        <url-pattern>/endpoints/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetDocument</servlet-name>
-        <url-pattern>/api/document</url-pattern>
+        <url-pattern>/endpoints/document</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddDocument</servlet-name>
-        <url-pattern>/api/addDocument</url-pattern>
+        <url-pattern>/endpoints/addDocument</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SaveDocument</servlet-name>
-        <url-pattern>/api/saveDocument</url-pattern>
+        <url-pattern>/endpoints/saveDocument</url-pattern>
     </servlet-mapping>
 </web-app>

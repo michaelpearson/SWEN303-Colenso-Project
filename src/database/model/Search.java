@@ -1,7 +1,6 @@
-package database.documents;
+package database.model;
 
-import database.SearchQueryProcessor;
-import util.Strings;
+import database.xml.SearchQueryProcessor;
 
 public class Search {
     enum SearchType {
@@ -46,10 +45,10 @@ public class Search {
             switch (searchType) {
                 default:
                 case FULLTEXT:
-                    q = String.format("for $x in (%s) where $x//text() contains text \"%s\" using fuzzy return $x", datasource, Strings.addSlashes(query));
+                    q = String.format("for $x in (%s) where $x//text() contains text \"%s\" using fuzzy return $x", datasource, addSlashes(query));
                     break;
                 case XQUERY:
-                    q = String.format("for $x in (%s) where $x%s return $x", datasource, Strings.addSlashes(query));
+                    q = String.format("for $x in (%s) where $x%s return $x", datasource, addSlashes(query));
                     break;
                 case LOGICAL:
                     String search = SearchQueryProcessor.processQuery(query);
@@ -61,5 +60,13 @@ public class Search {
             }
             return q;
         }
+    }
+    private static String addSlashes(String s) {
+        s = s.replaceAll("\\\\", "\\\\\\\\");
+        s = s.replaceAll("\\n", "\\\\n");
+        s = s.replaceAll("\\r", "\\\\r");
+        s = s.replaceAll("\\00", "\\\\0");
+        s = s.replaceAll("'", "\\\\'");
+        return s;
     }
 }

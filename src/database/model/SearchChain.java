@@ -1,7 +1,6 @@
-package database.documents;
+package database.model;
 
-import database.client.BaseXClient;
-import database.model.TeiDocument;
+import database.xml.client.BaseXClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ public class SearchChain {
         BaseXClient.Query q = client.preparedQuery(searchQuery);
         List<TeiDocument> results = new ArrayList<>();
         while (q.more()) {
-            results.add(TeiDocument.fromSearchResuls(q));
+            results.add(TeiDocument.fromSearchResults(q));
         }
         return results;
     }

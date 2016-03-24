@@ -852,7 +852,7 @@ $.fn.tab.settings = {
   cache           : true,   // cache the content requests to pull locally
   ignoreFirstLoad : false,  // don't load remote content on first load
 
-  apiSettings     : false,  // settings for api call
+  apiSettings     : false,  // settings for endpoints call
   evaluateScripts : 'once', // whether inline scripts should be parsed (true/false/once). Once will not re-evaluate on cached content
 
   onFirstLoad : function(tabPath, parameterArray, historyEvent) {}, // called first time loaded

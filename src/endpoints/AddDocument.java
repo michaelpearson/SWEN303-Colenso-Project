@@ -1,6 +1,7 @@
-package api;
+package endpoints;
 
-import database.client.BaseXClient;
+import database.model.TeiDocument;
+import database.xml.client.BaseXClient;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
@@ -8,7 +9,7 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import util.Response;
+import util.JsonResponse;
 import util.ServerConfiguration;
 
 import javax.servlet.ServletException;
@@ -35,16 +36,9 @@ public class AddDocument extends HttpServlet {
                 InputStream is = file.getInputStream();
                 StringWriter writer = new StringWriter();
                 IOUtils.copy(is, writer, Charset.defaultCharset());
-
-                BaseXClient client = BaseXClient.getClient();
-                String path = UUID.randomUUID().toString() + "/" + file.getName();
-                System.out.println(client.preparedCommand("ADD to %s %s", path, writer.toString()));
-                if(!writer.toString().equals("")) {
-                    BaseXClient.Query q = client.preparedQuery("db:open(\"%s\", \"%s\")/db:node-id(TEI)", ServerConfiguration.getConfigurationString("database", "name"), path);
-                    String documentId = q.next();
-                    if(documentId != null) {
-                        documentsAdded.add(Integer.valueOf(documentId));
-                    }
+                TeiDocument document = TeiDocument.insertFromXml(writer.toString(), file.getName());
+                if(document != null) {
+                    documentsAdded.add(document.getId());
                 }
             }
         } catch (FileUploadException e) {
@@ -52,6 +46,6 @@ public class AddDocument extends HttpServlet {
         }
         JSONObject resp = new JSONObject();
         resp.put("documentsAdded", documentsAdded);
-        Response.writeJsonResponse(resp, response);
+        JsonResponse.writeJsonResponse(resp, response);
     }
 }

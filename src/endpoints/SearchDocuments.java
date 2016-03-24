@@ -1,22 +1,20 @@
-package api;
+package endpoints;
 
-import database.documents.Search;
-import database.documents.SearchChain;
+import database.model.Search;
+import database.model.SearchChain;
 import database.model.TeiDocument;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import util.DocumentZip;
-import util.Response;
+import util.JsonResponse;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "SearchDocuments")
 public class SearchDocuments extends HttpServlet {
 
     private static Integer tryParseInt(String value, Integer defaultValue) {
@@ -75,7 +73,7 @@ public class SearchDocuments extends HttpServlet {
             resp.put("start", startIndex);
             resp.put("end", startIndex + i);
             resp.put("documents", documents);
-            Response.writeJsonResponse(resp, response);
+            JsonResponse.writeJsonResponse(resp, response);
 
         }
     }
