@@ -82,11 +82,16 @@ public class TeiDocument {
 
     public void update() throws IOException {
         BaseXClient client = BaseXClient.getClient();
-        String query = "for $x in collection() where db:node-id($x) = %d return replace node $x/TEI with %s";
+        String query = "for $x in collection() where db:node-id($x) = %d return replace node $x//TEI with %s";
         query = String.format(query, getId(), getXmlData().replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", ""));
         //I know the replace is crap but time constraints.
         //TODO: remove replace and parse the document properly.
-        client.preparedQuery(query);
+
+        //Weird bug with BaseX?? Have to enumerate query object to ensure the update happens.
+        BaseXClient.Query result = client.query(query);
+        while(result.more()) {
+            result.next();
+        }
         client.close();
     }
 
