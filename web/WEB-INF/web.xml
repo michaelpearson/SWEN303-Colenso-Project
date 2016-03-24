@@ -26,22 +26,22 @@
 
     <servlet-mapping>
         <servlet-name>DatabaseStatus</servlet-name>
-        <url-pattern>/endpoints/status</url-pattern>
+        <url-pattern>/api/status</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SearchDocuments</servlet-name>
-        <url-pattern>/endpoints/search</url-pattern>
+        <url-pattern>/api/search</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetDocument</servlet-name>
-        <url-pattern>/endpoints/document</url-pattern>
+        <url-pattern>/api/document</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddDocument</servlet-name>
-        <url-pattern>/endpoints/addDocument</url-pattern>
+        <url-pattern>/api/addDocument</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>SaveDocument</servlet-name>
-        <url-pattern>/endpoints/saveDocument</url-pattern>
+        <url-pattern>/api/saveDocument</url-pattern>
     </servlet-mapping>
 </web-app>
