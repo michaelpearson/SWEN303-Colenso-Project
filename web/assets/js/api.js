@@ -1,5 +1,5 @@
 function searchDocument(searchType, searchQuery, pageIndex, pageCount, callback, errorCallback) {
-    $.ajax("/endpoints/search", {
+    $.ajax("/api/search", {
         data : {
             type : searchType || "",
             query : searchQuery || "",
@@ -18,7 +18,7 @@ function searchDocument(searchType, searchQuery, pageIndex, pageCount, callback,
     });
 }
 function getDocument(documentId, callback) {
-    $.ajax("/endpoints/document", {
+    $.ajax("/api/document", {
         data : {
             documentId : documentId || ""
         },
@@ -27,7 +27,7 @@ function getDocument(documentId, callback) {
 }
 
 function getDocumentXml(documentId, callback) {
-    $.ajax("/endpoints/document", {
+    $.ajax("/api/document", {
         data : {
             documentId : documentId || "",
             type : "xml"
@@ -38,7 +38,7 @@ function getDocumentXml(documentId, callback) {
 }
 
 function validateXmlDocument(xml, callback) {
-    $.ajax("/endpoints/saveDocument", {
+    $.ajax("/api/saveDocument", {
         method : "post",
         data : {
             xml : xml,
@@ -49,7 +49,7 @@ function validateXmlDocument(xml, callback) {
 }
 
 function updateXmlDocument(xml, id, callback) {
-    $.ajax("/endpoints/saveDocument?id=" + id + "&save=1", {
+    $.ajax("/api/saveDocument?id=" + id + "&save=1", {
         method : "post",
         data : {
             xml : xml

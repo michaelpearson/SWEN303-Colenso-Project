@@ -16509,7 +16509,7 @@ $.fn.tab.settings = {
   cache           : true,   // cache the content requests to pull locally
   ignoreFirstLoad : false,  // don't load remote content on first load
 
-  apiSettings     : false,  // settings for endpoints call
+  apiSettings     : false,  // settings for api call
   evaluateScripts : 'once', // whether inline scripts should be parsed (true/false/once). Once will not re-evaluate on cached content
 
   onFirstLoad : function(tabPath, parameterArray, historyEvent) {}, // called first time loaded
@@ -18181,7 +18181,7 @@ $.api = $.fn.api = function(parameters) {
         create: {
 
           request: function() {
-            // endpoints request promise
+            // api request promise
             return $.Deferred()
               .always(module.event.request.complete)
               .done(module.event.request.done)
@@ -18666,7 +18666,7 @@ $.api.settings = {
     method            : 'The method you called is not defined',
     missingAction     : 'API action used but no url was defined',
     missingSerialize  : 'jquery-serialize-object is required to add form data to an existing data object',
-    missingURL        : 'No URL specified for endpoints event',
+    missingURL        : 'No URL specified for api event',
     noReturnedValue   : 'The beforeSend callback must return a settings object, beforeSend ignored.',
     noStorage         : 'Caching respopnses locally requires session storage',
     parseError        : 'There was an error parsing your request',

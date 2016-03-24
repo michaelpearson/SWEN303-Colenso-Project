@@ -26,7 +26,7 @@ pages.upload = {
             app.beginNavigation();
             var formData = new FormData($('#formUpload')[0]);
             $.ajax({
-                url: '/endpoints/addDocument',
+                url: '/api/addDocument',
                 type: 'POST',
                 xhr: function() {
                     var myXhr = $.ajaxSettings.xhr();

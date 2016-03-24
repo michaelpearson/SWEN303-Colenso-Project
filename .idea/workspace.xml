@@ -2,27 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3ceb7ecb-ffa1-45b5-bb9f-e6d300c92ee5" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/h2_1_4_191.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/BaseXGui.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/XsltTest.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/util/Strings.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/api/AddDocument.java" afterPath="$PROJECT_DIR$/src/endpoints/AddDocument.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/api/GetBaseXStatus.java" afterPath="$PROJECT_DIR$/src/endpoints/GetBaseXStatus.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/api/GetDocument.java" afterPath="$PROJECT_DIR$/src/endpoints/GetDocument.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/api/SaveDocument.java" afterPath="$PROJECT_DIR$/src/endpoints/SaveDocument.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/api/SearchDocuments.java" afterPath="$PROJECT_DIR$/src/endpoints/SearchDocuments.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/database/SearchQueryProcessor.java" afterPath="$PROJECT_DIR$/src/database/xml/SearchQueryProcessor.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/database/client/BaseXClient.java" afterPath="$PROJECT_DIR$/src/database/xml/client/BaseXClient.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/database/documents/Search.java" afterPath="$PROJECT_DIR$/src/database/model/Search.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/database/documents/SearchChain.java" afterPath="$PROJECT_DIR$/src/database/model/SearchChain.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/util/DocumentRenderer.java" afterPath="$PROJECT_DIR$/src/util/XSLTTransformer.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/util/Response.java" afterPath="$PROJECT_DIR$/src/util/JsonResponse.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/artifacts/SWEN303_Colenso_Project_war_exploded.xml" afterPath="$PROJECT_DIR$/.idea/artifacts/SWEN303_Colenso_Project_war_exploded.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SWEN303-Colenso-Project.iml" afterPath="$PROJECT_DIR$/SWEN303-Colenso-Project.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/database/model/TeiDocument.java" afterPath="$PROJECT_DIR$/src/database/model/TeiDocument.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/WEB-INF/web.xml" afterPath="$PROJECT_DIR$/web/WEB-INF/web.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/assets/js/api.js" afterPath="$PROJECT_DIR$/web/assets/js/api.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/assets/js/search.js" afterPath="$PROJECT_DIR$/web/assets/js/search.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/assets/js/upload.js" afterPath="$PROJECT_DIR$/web/assets/js/upload.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/assets/lib/jquery-2.2.1.js" afterPath="$PROJECT_DIR$/web/assets/lib/jquery-2.2.1.js" />
@@ -55,31 +35,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SearchDocuments.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="SearchDocuments.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/endpoints/SearchDocuments.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="64">
-              <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SearchChain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/database/model/SearchChain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TeiDocument.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/database/model/TeiDocument.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="950">
-              <caret line="132" column="25" selection-start-line="132" selection-start-column="25" selection-end-line="132" selection-end-column="25" />
+            <state relative-caret-position="342">
+              <caret line="32" column="61" selection-start-line="32" selection-start-column="61" selection-end-line="32" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -174,8 +134,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1906" />
-    <option name="height" value="2127" />
+    <option name="x" value="-1" />
+    <option name="width" value="1922" />
+    <option name="height" value="2128" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1352,16 +1313,16 @@
       <workItem from="1458635511710" duration="11406000" />
       <workItem from="1458700774603" duration="4420000" />
       <workItem from="1458793008502" duration="719000" />
-      <workItem from="1458859903700" duration="1249000" />
+      <workItem from="1458859903700" duration="1474000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="132059000" />
+    <option name="totallyTimeSpent" value="132284000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1906" height="2127" extended-state="4" />
-    <editor active="true" />
+    <frame x="-1" y="0" width="1922" height="2128" extended-state="4" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1372,10 +1333,10 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32966483" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32966483" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33316657" sideWeight="0.4948652" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23688155" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33316657" sideWeight="0.4948652" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2365" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2567132" sideWeight="0.49487835" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25452608" sideWeight="0.49487835" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31752798" sideWeight="0.50512165" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32883558" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1776,10 +1737,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/endpoints/SearchDocuments.java">
+    <entry file="file://$PROJECT_DIR$/src/database/model/TeiDocument.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
+        <state relative-caret-position="950">
+          <caret line="132" column="25" selection-start-line="132" selection-start-column="25" selection-end-line="132" selection-end-column="25" />
           <folding />
         </state>
       </provider>
@@ -1792,10 +1753,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/database/model/TeiDocument.java">
+    <entry file="file://$PROJECT_DIR$/src/endpoints/SearchDocuments.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="950">
-          <caret line="132" column="25" selection-start-line="132" selection-start-column="25" selection-end-line="132" selection-end-column="25" />
+        <state relative-caret-position="342">
+          <caret line="32" column="61" selection-start-line="32" selection-start-column="61" selection-end-line="32" selection-end-column="61" />
           <folding />
         </state>
       </provider>
