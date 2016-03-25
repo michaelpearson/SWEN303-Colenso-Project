@@ -44,7 +44,6 @@ pages.search = {
         if(val) {
             var type = me.typeValueToLabel(val);
             me.nestedSearchElements[nestedIndex].find('.search-type-selector').html(type);
-            //me.updateSearchBox(nestedIndex)
         }
         return me.typeLabelToValue(me.nestedSearchElements[nestedIndex].find('.search-type-selector').text());
     },
@@ -246,7 +245,6 @@ pages.search = {
         $('#search.page').css({
             display : 'block'
         });
-        //$('.documents-found').text("");
         pages.search.pageNumer = arguments.page || 1;
         pages.search.completeCallback = renderCompleteCallback;
         pages.search.initControls(arguments);

@@ -21,3 +21,5 @@ out/
 workspace.xml
 
 configuration.json
+
+*.db

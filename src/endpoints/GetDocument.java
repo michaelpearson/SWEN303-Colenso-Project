@@ -1,6 +1,7 @@
 package endpoints;
 
 import database.model.TeiDocument;
+import database.sql.DocumentViewLogger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,6 +30,7 @@ public class GetDocument extends HttpServlet {
                     }
                     try {
                         response.getWriter().print(document.renderHTML());
+                        new DocumentViewLogger().logEvent(request, document);
                     } catch(TransformerException e) {
                         e.printStackTrace();
                     }

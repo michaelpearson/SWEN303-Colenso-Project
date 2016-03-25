@@ -3,11 +3,15 @@ package database.model;
 import database.xml.SearchQueryProcessor;
 
 public class Search {
-    enum SearchType {
-        FULLTEXT,
-        XQUERY,
-        LOGICAL,
-        ID
+    public enum SearchType {
+        FULLTEXT(0),
+        XQUERY(1),
+        LOGICAL(2),
+        ID(3);
+        public final int DB_TYPE;
+        SearchType(int type) {
+            DB_TYPE = type;
+        }
     }
 
     private SearchType searchType;
@@ -68,5 +72,13 @@ public class Search {
         s = s.replaceAll("\\00", "\\\\0");
         s = s.replaceAll("'", "\\\\'");
         return s;
+    }
+
+    public SearchType getSearchType() {
+        return searchType;
+    }
+
+    public String getQuery() {
+        return query;
     }
 }

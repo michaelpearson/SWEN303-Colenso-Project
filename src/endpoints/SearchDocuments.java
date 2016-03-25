@@ -3,6 +3,7 @@ package endpoints;
 import database.model.Search;
 import database.model.SearchChain;
 import database.model.TeiDocument;
+import database.sql.SearchLogger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import util.DocumentZip;
@@ -52,6 +53,7 @@ public class SearchDocuments extends HttpServlet {
         int startIndex = page * count;
 
         List<TeiDocument> searchResults = searchChain.executeSearch();
+        new SearchLogger().logEvent(request, searchChain);
 
         if(download) {
             DocumentZip.writeDocumentToStream(searchResults, response.getOutputStream());

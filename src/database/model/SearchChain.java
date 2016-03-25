@@ -1,14 +1,13 @@
 package database.model;
 
+import database.sql.LoggableSearchChain;
 import database.xml.client.BaseXClient;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchChain {
-    private List<Search> searches = new ArrayList<>();
-
+public class SearchChain extends LoggableSearchChain {
 
     public SearchChain() {}
 
@@ -36,6 +35,7 @@ public class SearchChain {
         while (q.more()) {
             results.add(TeiDocument.fromSearchResults(q));
         }
+        this.results = results;
         return results;
     }
 }

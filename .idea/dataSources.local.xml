@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="H2 - searchDB" uuid="2ff92275-dfc4-47e9-bb72-2a60cf20d497">
+      <secret-storage>master_key</secret-storage>
+    </data-source>
+  </component>
+</project>
