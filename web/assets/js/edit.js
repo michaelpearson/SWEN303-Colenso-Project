@@ -17,6 +17,7 @@ pages.edit = {
             display : 'block'
         });
         me.initControls();
+        $('#cancel').attr('href', "#/document/id/" + me.documentId);
         getDocumentXml(me.documentId, me.populateTextArea);
     },
     initControls : function () {
@@ -26,8 +27,12 @@ pages.edit = {
         }
         me.initComplete = true;
         $('#edit.page').find('.btn-save').click(function () {
-            updateXmlDocument(me.codeMirrorObject.getValue(), me.documentId, function (success) {
-                alert(success ? "Saved successfully" : "Failed to save");
+            updateXmlDocument(me.codeMirrorObject.getValue(), me.documentId, function (success, response) {
+                if(response.saved) {
+                    alert("Document successfully saved");
+                } else {
+                    alert("Document could not be saved. Please check for errors");
+                }
             });
         });
         me.textAreaElement = $('#xml-document');
@@ -50,13 +55,14 @@ pages.edit = {
                                 }
                             });
                         }
-                        for(var a = 0;a < response.errors.length;a++) {
+                        var a;
+                        for(a = 0;a < response.errors.length;a++) {
                             addError("error", response.errors[a].lineNumber, response.errors[a].description);
                         }
-                        for(var a = 0;a < response.fatalErrors.length;a++) {
+                        for(a = 0;a < response.fatalErrors.length;a++) {
                             addError("error", response.fatalErrors[a].lineNumber, response.fatalErrors[a].description);
                         }
-                        for(var a = 0;a < response.warnings.length;a++) {
+                        for(a = 0;a < response.warnings.length;a++) {
                             addError("error", response.warnings[a].lineNumber, response.warnings[a].description);
                         }
                         callback(build);
@@ -65,6 +71,10 @@ pages.edit = {
                 async : true
             }
         });
+    },
+    resize : function () {
+        var me = pages.edit;
+        me.textAreaElement.height($(window).height() - 641);
     },
     populateTextArea : function (document) {
         var me = pages.edit;

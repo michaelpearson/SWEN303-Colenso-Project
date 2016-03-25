@@ -3,7 +3,7 @@ pages.stats = {
     controlsInited : false,
     tableElement : null,
     renderCompleteCallback : null,
-    pageIndex : 0,
+    page : 1,
     pageSize : 10,
     renderPage : function (arguments, renderCompleteCallback) {
         var me = pages.stats;
@@ -16,7 +16,7 @@ pages.stats = {
     },
     getSearches : function (callback) {
         var me = pages.stats;
-        getTopSearches(me.pageSize, me.pageIndex * me.pageSize, callback);
+        getTopSearches(me.pageSize, me.page, callback);
     },
     populateResults : function (results) {
         var me = pages.stats;
@@ -32,12 +32,12 @@ pages.stats = {
                 if(searchQuery != "") {
                     searchQuery += "<br>AND<br>";
                 }
-                searchQueryLink += "type/" + search.queries[b].type + "/query/" + search.queries[b].query + "/";
+                searchQueryLink += "type/" + search.queries[b].type + "/query/" + encodeURIComponent(search.queries[b].query) + "/";
                 searchQuery += search.queries[b].query == "" ? "Nothing" : search.queries[b].query;
             }
             var row = $("<tr>");
             var queryElement = $("<td>");
-            queryElement.append("<a href=\"" + searchQueryLink + "\">" + searchQuery + "</a>");
+            queryElement.append("<a href=\"" + searchQueryLink + "\">" + searchQuery.replace(/\n/gi, "<br>") + "</a>");
             var countElement = $("<td>");
             countElement.append("<p>" + search.searchCount + "</p>");
             row.append(queryElement, countElement);

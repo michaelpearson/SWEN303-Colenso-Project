@@ -115,7 +115,7 @@ public class TeiDocument {
         System.out.println(client.preparedCommand("ADD to %s %s", path, xml));
         TeiDocument document = null;
         if(!xml.equals("")) {
-            BaseXClient.Query q = client.preparedQuery("db:open(\"%s\", \"%s\")/db:node-id(TEI)", ServerConfiguration.getConfigurationString("database", "name"), path);
+            BaseXClient.Query q = client.preparedQuery("db:node-id(db:open(\"%s\", \"%s\"))", ServerConfiguration.getConfigurationString("database", "name"), path);
             String documentId = q.next();
             if(documentId != null) {
                 document = fromId(Integer.valueOf(documentId));

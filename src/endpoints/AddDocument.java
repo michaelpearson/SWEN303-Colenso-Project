@@ -32,7 +32,6 @@ public class AddDocument extends HttpServlet {
         try {
             List<FileItem> files = upload.parseRequest(request);
             for(FileItem file : files) {
-                int c;
                 InputStream is = file.getInputStream();
                 StringWriter writer = new StringWriter();
                 IOUtils.copy(is, writer, Charset.defaultCharset());

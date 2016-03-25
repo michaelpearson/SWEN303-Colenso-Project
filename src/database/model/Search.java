@@ -73,7 +73,11 @@ public class Search {
                     q = String.format("for $x in (%s) where $x//text() contains text \"%s\" using fuzzy return $x", datasource, addSlashes(query));
                     break;
                 case XQUERY:
-                    q = String.format("for $x in (%s) where $x%s return $x", datasource, addSlashes(query));
+                    if(query.toLowerCase().startsWith("for")) {
+                        q = String.format("for $x in (%s) where %s return $x", datasource, query);
+                    } else {
+                        q = String.format("for $x in (%s) where $x%s return $x", datasource, query);
+                    }
                     break;
                 case LOGICAL:
                     String search = SearchQueryProcessor.processQuery(query);

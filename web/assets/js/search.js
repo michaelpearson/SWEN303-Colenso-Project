@@ -7,7 +7,7 @@ pages.search = {
     queryResultCount : 0,
     queryResultAllId : "",
     nestedSearchElements : [],
-    nestedSearchElementHtmlTemplate : '<div class="ui right labeled input action nested-search-container">\n    <div class="search-input">\n        <input type="text" placeholder="Search term">\n    </div>\n    <div class="ui right labeled input action button-container">\n        <div class="ui dropdown label">\n            <div class="text search-type-selector">Simple search</div>\n                <i class="dropdown icon"></i>\n                <div class="menu">\n                <div class="item">Simple search</div>\n                <div class="item">Logical search</div>\n                <div class="item">XQuery search</div>\n            </div>\n        </div>\n        <!--\n        <button class="ui button primary" id="button-search">Search</button>\n        -->\n    </div>\n</div>',
+    nestedSearchElementHtmlTemplate : '<div class="ui right labeled input action nested-search-container">\n    <div class="search-input">\n        <input type="text" placeholder="Search term">\n    </div>\n    <div class="ui right labeled input action button-container">\n        <div class="ui dropdown label">\n            <div class="text search-type-selector">Simple search</div>\n                <i class="dropdown icon"></i>\n                <div class="menu">\n                <div class="item">Simple search</div>\n                <div class="item">Logical search</div>\n                <div class="item">XQuery search</div>\n            </div>\n        </div>\n    </div>\n</div>',
     queryValue : function (nestedIndex, val) {
         var me = pages.search;
         if(nestedIndex === undefined) {
@@ -168,7 +168,7 @@ pages.search = {
         type = type || me.queryType(nestedIndex);
         searchContainer.children().remove();
         if(type == "xquery") {
-            searchContainer.append('<div class="input" contenteditable="true"></div>');
+            searchContainer.append('<textarea class="input" style="resize: none;"></textarea>');
         } else {
             var el = searchContainer.append('<input type="text" placeholder="Search term" id="search-input">');
             el.off("keydown");

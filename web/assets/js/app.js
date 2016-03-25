@@ -1,7 +1,12 @@
 $(function () {
-    $(window).on('hashchange', function () {
+    $(window).on('hashchange', function (e) {
         app.renderPage();
     }).trigger('hashchange');
+    $(window).on('resize', function () {
+        if(pages[app.currentPage] && pages[app.currentPage].resize) {
+            pages[app.currentPage].resize();
+        }
+    });
 });
 // Array Remove - By John Resig (MIT Licensed)
 Array.prototype.remove = function(from, to) {
@@ -12,7 +17,10 @@ Array.prototype.remove = function(from, to) {
 var pages = window.pages || {};
 var app = {
     disableNavigation : false,
+    currentHash : "",
+    currentPage : null,
     decodeHash : function() {
+        var me = app;
         try {
             var hash = window.location.hash.match(/^#?(.+)$/)[1];
         } catch (e) {
@@ -40,10 +48,13 @@ var app = {
                 a++;
             }
         }
-        return {
+        var build = {
             arguments : argumentMap,
-            pageName : pageName == "" ? "home" : pageName
+            pageName : pageName == "" ? "home" : pageName,
+            previousHash : me.currentHash
         };
+        me.currentHash = hash;
+        return build;
     },
     encodeHash : function(pageName, pageArguments, setHash) {
         setHash = setHash || false;
@@ -76,8 +87,12 @@ var app = {
             display: 'none'
         });
         if (pages[pageState.pageName] && pages[pageState.pageName].renderPage) {
+            app.currentPage = pageState.pageName;
             app.beginNavigation();
-            pages[pageState.pageName].renderPage(pageState.arguments, app.endNavigation.bind(this));
+            pages[pageState.pageName].renderPage(pageState.arguments, app.endNavigation.bind(this), pageState.previousHash);
+            if(pages[pageState.pageName].resize) {
+                pages[pageState.pageName].resize();
+            }
         }
     },
     beginNavigation : function() {

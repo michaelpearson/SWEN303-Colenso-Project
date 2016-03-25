@@ -4,19 +4,21 @@ pages.document = {
     controlsInitialised : false,
     titleElement : null,
     documentCache : {},
+    documentId : 0,
     renderPage : function (pageArguments, renderCompleteCallback) {
+        var me = pages.document;
         $('#document.page').css({
             display : 'block'
         });
-        this.renderCompleteCallback = renderCompleteCallback;
-        this.initControls();
+        me.renderCompleteCallback = renderCompleteCallback;
+        me.initControls();
         if(pageArguments.title) {
-            this.title(pageArguments.title);
+            me.title(pageArguments.title);
         } else {
-            this.title("Loading document");
+            me.title("Loading document");
         }
         $('#document-view').children().remove();
-        this.loadDocument(pageArguments.id, this.setDocument.bind(this));
+        me.loadDocument(pageArguments.id, me.setDocument.bind(me));
     },
     initControls : function () {
         if(this.controlsInitialised) {
@@ -35,9 +37,8 @@ pages.document = {
         return this.titleElement.text();
     },
     setDocument : function (document) {
-        this.titleElement.css({
-            display: "none"
-        });
+        var me = pages.document;
+        $('#edit-document-link').attr('href', "#/edit/id/" + me.documentId);
         var documentEl = $('#document-view');
         documentEl.children().remove();
         documentEl.append(document);
@@ -49,13 +50,15 @@ pages.document = {
             }
             return true;
         });
-        if(this.renderCompleteCallback != null) {
-            this.renderCompleteCallback();
-            this.renderCompleteCallback = null;
+        me.titleElement.text($('h1.maintitle').html());
+        if(me.renderCompleteCallback != null) {
+            me.renderCompleteCallback();
+            me.renderCompleteCallback = null;
         }
     },
     loadDocument : function (documentId, loadComplete) {
         var me = this;
+        me.documentId = documentId;
         if(this.documentCache[documentId]) {
             loadComplete(this.documentCache[documentId]);
         }

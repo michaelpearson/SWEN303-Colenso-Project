@@ -131,7 +131,7 @@
                             Browse
                         </button>
                         <h3 id="file-name-display"></h3>
-                        <input class="ui labeled button secondary large" type="button" id="uploadSubmitButton" value="Upload">
+                        <input class="ui button secondary large" type="button" id="uploadSubmitButton" value="Upload">
                     </form>
                 </div>
                 <div class="page" id="stats">
@@ -154,7 +154,14 @@
                 <div class="page" id="document">
                     <div class="title">
                         <h1>Document</h1>
+                        <div style="float: right;">
+                            <a id="edit-document-link" href=""><i class="ui icon edit"></i> Edit this document</a>
+                        </div>
+                        <div class="return">
+                            <a href="javascript: window.history.back(-1);"><i class="ui icon backward"></i>Return to previous page</a>
+                        </div>
                     </div>
+
                     <div id="document-view">
 
                     </div>
@@ -162,9 +169,17 @@
                 <div class="page" id="edit">
                     <div class="title">
                         <h1>Edit document</h1>
+                        <div>
+                            <a href="javascript: window.history.back(-1);"><i class="ui icon backward"></i>Return to previous page</a>
+                            <div style="float: right;">
+                                <a id="cancel" href=""><i class="ui icon eye"></i>Cancel & view document</a>
+                            </div>
+                        </div>
                     </div>
                     <div id="xml-document"></div>
-                    <a class="ui button primary btn-save">Submit</a>
+                    <div class="save-changes-container" style="width: 100%; text-align: center; padding-top: 20px;">
+                        <a class="ui button primary btn-save">Save Changes</a>
+                    </div>
                 </div>
             </div>
 

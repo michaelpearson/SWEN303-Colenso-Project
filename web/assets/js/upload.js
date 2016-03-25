@@ -30,15 +30,18 @@ pages.upload = {
                 type: 'POST',
                 xhr: function() {
                     var myXhr = $.ajaxSettings.xhr();
-                    if(myXhr.upload) {
-                        myXhr.upload.addEventListener('progress',function () {
-                            console.log("Progress");
-                        }, false);
-                    }
+                    //if(myXhr.upload) {
+                        //myXhr.upload.addEventListener('progress',function () {
+                        //    console.log("Progress");
+                        //}, false);
+                    //}
                     return myXhr;
                 },
-                success: function () {
+                success: function (document) {
                     $('#file-name-display').text("File successfully uploaded");
+                    setTimeout(function () {
+                        window.location.hash = "/document/id/" + document.documentsAdded[0];
+                    }, 500);
 
                     app.endNavigation();
                 },

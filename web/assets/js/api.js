@@ -59,7 +59,7 @@ function updateXmlDocument(xml, id, callback) {
     });
 }
 
-function getTopSearches(count, start, callback) {
+function getTopSearches(count, page, callback) {
     $.ajax("/api/getSearchStats", {
         error : function () {
             alert("An error occured communicating with the server");
@@ -67,8 +67,8 @@ function getTopSearches(count, start, callback) {
         success : callback,
         method: "get",
         data : {
-            count : count || 0,
-            start : start || 0
+            count : count || 10,
+            page : page || 1
         }
     });
 }
