@@ -2,15 +2,35 @@ package database.model;
 
 import database.xml.SearchQueryProcessor;
 
+import java.sql.*;
+
 public class Search {
     public enum SearchType {
-        FULLTEXT(0),
-        XQUERY(1),
-        LOGICAL(2),
-        ID(3);
+        FULLTEXT(0, "fulltext"),
+        XQUERY(1, "xquery"),
+        LOGICAL(2, "logical"),
+        ID(3, "id");
         public final int DB_TYPE;
-        SearchType(int type) {
+        public final String value;
+        SearchType(int type, String value) {
             DB_TYPE = type;
+            this.value = value;
+        }
+        public static SearchType fromDbType(int t) {
+            for(SearchType st : SearchType.values()) {
+                if(st.DB_TYPE == t) {
+                    return st;
+                }
+            }
+            return null;
+        }
+        public static SearchType fromString(String s) {
+            for(SearchType st : SearchType.values()) {
+                if(s.equals(st.value)) {
+                    return st;
+                }
+            }
+            return null;
         }
     }
 
@@ -18,22 +38,23 @@ public class Search {
     private String query;
 
     public Search(String type, String query) {
-        switch(type) {
-            case "fulltext":
-            default:
-                searchType = SearchType.FULLTEXT;
-                break;
-            case "xquery":
-                searchType = SearchType.XQUERY;
-                break;
-            case "logical":
-                searchType = SearchType.LOGICAL;
-                break;
-            case "id":
-                searchType = SearchType.ID;
-                break;
-        }
+        searchType = SearchType.fromString(type);
         this.query = query;
+    }
+
+    private Search() {}
+
+    public static Search fromDatabase(int id, Connection c) throws SQLException {
+        PreparedStatement query = c.prepareStatement("select QUERY as query, TYPE as type from SEARCH where id = ?");
+        query.setInt(1, id);
+        ResultSet result = query.executeQuery();
+        if(result == null || !result.next()) {
+            throw new RuntimeException("Could not find search");
+        }
+        Search s = new Search();
+        s.query = result.getString("query");
+        s.searchType = SearchType.fromDbType(result.getInt("type"));
+        return s;
     }
 
     public String getPreparedQuery() {

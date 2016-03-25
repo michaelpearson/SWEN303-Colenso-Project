@@ -22,6 +22,10 @@
         <servlet-name>SaveDocument</servlet-name>
         <servlet-class>endpoints.SaveDocument</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetStats</servlet-name>
+        <servlet-class>endpoints.GetSearchStats</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -43,5 +47,9 @@
     <servlet-mapping>
         <servlet-name>SaveDocument</servlet-name>
         <url-pattern>/api/saveDocument</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetStats</servlet-name>
+        <url-pattern>/api/getSearchStats</url-pattern>
     </servlet-mapping>
 </web-app>

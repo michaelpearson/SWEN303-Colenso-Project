@@ -1,5 +1,6 @@
 package database.model;
 
+import database.sql.DocumentViewLogger;
 import database.xml.client.BaseXClient;
 import org.jetbrains.annotations.Nullable;
 import org.w3c.dom.Document;
@@ -20,6 +21,10 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
 
@@ -163,5 +168,16 @@ public class TeiDocument {
 
     public void setXmlData(String xmlData) {
         this.xmlData = xmlData;
+    }
+
+    public int getViewCount(Connection c) throws SQLException {
+        PreparedStatement statement = c.prepareStatement("SELECT count(*) AS view_count FROM DOCUMENT_EVENTS WHERE DOCUMENT_ID = ? AND EVENT_TYPE = ?");
+        statement.setInt(1, getId());
+        statement.setInt(2, DocumentViewLogger.DocumentEventType.VIEW.DB_TYPE);
+        ResultSet result = statement.executeQuery();
+        if(result == null || !result.next()) {
+            return 0;
+        }
+        return result.getInt("view_count");
     }
 }

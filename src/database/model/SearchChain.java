@@ -4,6 +4,7 @@ import database.sql.LoggableSearchChain;
 import database.xml.client.BaseXClient;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,5 +38,23 @@ public class SearchChain extends LoggableSearchChain {
         }
         this.results = results;
         return results;
+    }
+
+    public static SearchChain fromDatabase(int id, Connection c) throws SQLException {
+        PreparedStatement query = c.prepareStatement("select id from SEARCH where SEARCH_CHAIN = ?");
+        query.setInt(1, id);
+        ResultSet results = query.executeQuery();
+        if(results == null) {
+            return null;
+        }
+        SearchChain sc = new SearchChain();
+        while(results.next()) {
+            sc.addSearch(Search.fromDatabase(results.getInt("id"), c));
+        }
+        return sc;
+    }
+
+    public List<Search> getSearches() {
+        return searches;
     }
 }

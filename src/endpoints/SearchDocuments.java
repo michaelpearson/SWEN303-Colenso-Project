@@ -3,6 +3,7 @@ package endpoints;
 import database.model.Search;
 import database.model.SearchChain;
 import database.model.TeiDocument;
+import database.sql.Database;
 import database.sql.SearchLogger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class SearchDocuments extends HttpServlet {
@@ -58,6 +61,7 @@ public class SearchDocuments extends HttpServlet {
         if(download) {
             DocumentZip.writeDocumentToStream(searchResults, response.getOutputStream());
         } else {
+            Connection c = Database.getConnection();
             JSONObject resp = new JSONObject();
             int i = 0;
             JSONArray documents = new JSONArray();
@@ -67,16 +71,24 @@ public class SearchDocuments extends HttpServlet {
                     document.put("id", searchResults.get(a).getId());
                     document.put("title", searchResults.get(a).getTitle());
                     document.put("date", searchResults.get(a).getDate());
+                    try {
+                        document.put("viewCount", searchResults.get(a).getViewCount(c));
+                    } catch (SQLException e) {
+                        document.put("viewCount", 0);
+                    }
                     documents.add(document);
                     i++;
                 }
             }
+            try {
+                c.close();
+            } catch (SQLException ignore) {}
+
             resp.put("total", searchResults.size());
             resp.put("start", startIndex);
             resp.put("end", startIndex + i);
             resp.put("documents", documents);
             JsonResponse.writeJsonResponse(resp, response);
-
         }
     }
 }

@@ -75,7 +75,6 @@ pages.search = {
         return pages.search.pageNumber;
     },
     decodePageArguments : function (pageArguments) {
-        console.log(pageArguments);
         var me = pages.search;
         if(!Array.isArray(pageArguments.type)) {
             pageArguments.type = [pageArguments.type];
@@ -109,6 +108,7 @@ pages.search = {
             var title = $('<td><a></a></td>');
             var date = $('<td></td>');
             var options = $('<td class="option-panel"><a href="#/edit/id/' + documents[a].id + '"><i class="icon edit"></i></a></td>');
+            var viewCount = $('<td><p>' + (documents[a].viewCount || 0) + '</p></td>');
 
             var href = app.encodeHash("document", {
                 id : documents[a].id,
@@ -116,9 +116,9 @@ pages.search = {
             });
             title.find('a').text(documents[a].title).attr('href', href);
 
-            date.text(documents[a].date);
+            date.text(documents[a].date == "" ? "Unknown" : documents[a].date);
 
-            row.append(title, date, options);
+            row.append(title, date, viewCount, options);
             resultBody.append(row);
         }
         pages.search.syncPagingControls();

@@ -7,6 +7,7 @@
         <link href="assets/css/app.css" rel="stylesheet">
         <link href="assets/css/tei.css" rel="stylesheet">
         <link href="assets/lib/codemirror.css" rel="stylesheet">
+
         <link href="assets/lib/lint.css" rel="stylesheet">
         <script src="assets/lib/jquery-2.2.1.js"></script>
         <script src="assets/lib/Semantic-UI/dist/semantic.js"></script>
@@ -88,6 +89,7 @@
                                 <tr>
                                     <th class="document-title">Document Title</th>
                                     <th class="document-date">Date</th>
+                                    <th class="document-views">Views</th>
                                     <th class="document-options">Options</th>
                                 </tr>
                             </thead>
@@ -95,7 +97,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="3">
+                                    <th colspan="4">
                                         <div class="ui buttons right floated page-size">
                                             <button class="ui button">10</button>
                                             <button class="ui button active">50</button>
@@ -133,7 +135,21 @@
                     </form>
                 </div>
                 <div class="page" id="stats">
-
+                    <div class="title"><h1>Website statistics</h1></div>
+                    <div class="results">
+                        <h3>Top 10 searches:</h3>
+                        <table class="ui celled table unstackable">
+                            <thead>
+                            <tr>
+                                <th class="document-title">Search query</th>
+                                <th class="document-date">Number of times searched</th>
+                            </tr>
+                            </thead>
+                            <tbody id="stat-result-body">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="searches"></div>
                 </div>
                 <div class="page" id="document">
                     <div class="title">

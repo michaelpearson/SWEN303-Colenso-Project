@@ -322,7 +322,7 @@
       <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
     </table>
     <table name="DOCUMENT_EVENTS" schema="PUBLIC" catalog="SEARCHDB" type="TABLE">
-      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfRjEwQTMzREZfNUY2Rl80RkIxX0JFRDNfRkJBNzYxMjI5OTBBKQ==" autoIncrement="true"/>
+      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfOTRCMkY1MjFfNjM3Rl80Nzc0Xzk3MTNfNTQ4MTUwNURCQjlCKQ==" autoIncrement="true"/>
       <column name="DOCUMENT_ID" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="EVENT_TYPE" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="DATE" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
@@ -330,22 +330,23 @@
       <primary-key name="CONSTRAINT_8" columns="ID"/>
     </table>
     <table name="MEMBERS" schema="PUBLIC" catalog="SEARCHDB" type="TABLE">
-      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfRjc3MkU1MTNfRkY4NV80QTEyXzk2M0VfQTZEMzU2ODcyMDQzKQ==" autoIncrement="true"/>
+      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfNDg4OEQ1MjFfNTM4MF80NkYwX0FEOTBfOTkyNjIzNEEwRjgzKQ==" autoIncrement="true"/>
       <column name="NAME" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="CONSTRAINT_6" columns="ID"/>
     </table>
     <table name="SEARCH" schema="PUBLIC" catalog="SEARCHDB" type="TABLE">
-      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfMzRCNjM2NUJfMDU5NF80MzQxX0E3NjhfRDcxODdGN0Q1NTQ1KQ==" autoIncrement="true"/>
+      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfOTg3NTAxRkRfMkM1NV80MjYwXzk3RTNfQ0MyNjdBQkRBMTkzKQ==" autoIncrement="true"/>
       <column name="SEARCH_CHAIN" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="QUERY" sqlType="CLOB" precision="2147483647" scale="0" nullable="true" jdbcType="2005"/>
       <column name="TYPE" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="CONSTRAINT_9" columns="ID"/>
     </table>
     <table name="SEARCH_CHAIN" schema="PUBLIC" catalog="SEARCHDB" type="TABLE">
-      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfMkFDNjdGQjhfN0ZGOV80MzE1XzgzN0VfMjZBMjYwOUQ2RDdFKQ==" autoIncrement="true"/>
+      <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4" def="KE5FWFQgVkFMVUUgRk9SIFBVQkxJQy5TWVNURU1fU0VRVUVOQ0VfODc4RDVERUNfOTE3N180OEQwX0E2MEZfNUREMTdEQUQ5NEI0KQ==" autoIncrement="true"/>
       <column name="RESULT_COUNT" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="TIME" sqlType="BIGINT" precision="19" scale="0" nullable="true" jdbcType="-5"/>
       <column name="MEMBER_TOKEN" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="SEARCH_HASH" sqlType="CLOB" precision="2147483647" scale="0" nullable="true" jdbcType="2005"/>
       <primary-key name="CONSTRAINT_D" columns="ID"/>
     </table>
   </data-source>

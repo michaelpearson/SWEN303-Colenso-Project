@@ -6,7 +6,8 @@ CREATE TABLE search_chain (
   id INT PRIMARY KEY AUTO_INCREMENT,
   result_count INT,
   time BIGINT,
-  member_token INT
+  member_token INT,
+  search_hash TEXT
 );
 
 CREATE TABLE search (
