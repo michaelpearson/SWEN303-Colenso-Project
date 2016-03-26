@@ -26,6 +26,10 @@
         <servlet-name>GetStats</servlet-name>
         <servlet-class>endpoints.GetSearchStats</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TagDocuments</servlet-name>
+        <servlet-class>endpoints.TagDocuments</servlet-class>
+    </servlet>
 
 
     <servlet-mapping>
@@ -51,5 +55,9 @@
     <servlet-mapping>
         <servlet-name>GetStats</servlet-name>
         <url-pattern>/api/getSearchStats</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TagDocuments</servlet-name>
+        <url-pattern>/api/tagDocuments</url-pattern>
     </servlet-mapping>
 </web-app>

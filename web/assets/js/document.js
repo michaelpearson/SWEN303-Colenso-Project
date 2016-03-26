@@ -39,6 +39,7 @@ pages.document = {
     setDocument : function (document) {
         var me = pages.document;
         $('#edit-document-link').attr('href', "#/edit/id/" + me.documentId);
+        $('#document-download-link').attr('href', "/api/search?type=id&query=" + me.documentId + "&download=1");
         var documentEl = $('#document-view');
         documentEl.children().remove();
         documentEl.append(document);

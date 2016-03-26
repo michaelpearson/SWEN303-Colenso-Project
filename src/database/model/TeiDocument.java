@@ -109,6 +109,21 @@ public class TeiDocument {
         this.xmlData = xmlData;
     }
 
+
+    public void tag(String tagType, String tagValue) throws IOException {
+        String query = "for $x in collection()\n" +
+                "where db:node-id($x) = %d\n" +
+                "where not ($x//correspDesc/note/name[@type=\"%s\"]/text() = \"%s\")\n" +
+                "return insert node <note><name type=\"%s\">%s</name></note> into $x//correspDesc";
+        query = String.format(query, getId(), tagType, tagValue, tagType, tagValue);
+        BaseXClient client = BaseXClient.getClient();
+        BaseXClient.Query result = client.query(query);
+        while(result.more()) {
+            result.next();
+        }
+        client.close();
+    }
+
     public static TeiDocument insertFromXml(String xml, String fileName) throws IOException {
         BaseXClient client = BaseXClient.getClient();
         String path = UUID.randomUUID().toString() + "/" + fileName;

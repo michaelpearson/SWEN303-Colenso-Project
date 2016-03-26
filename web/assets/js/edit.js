@@ -74,7 +74,7 @@ pages.edit = {
     },
     resize : function () {
         var me = pages.edit;
-        me.textAreaElement.height($(window).height() - 641);
+        me.textAreaElement.height($(window).height() - 441);
     },
     populateTextArea : function (document) {
         var me = pages.edit;

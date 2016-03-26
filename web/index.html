@@ -76,14 +76,29 @@
                             <i class="search icon"></i>
                             Search
                         </button>
-
                     </div>
                     <br />
                     <div class="results">
-                        <div class="title">
-                            <h3>Results: </h3>
+                        <h1>Results:</h1>
+                        <a class="documents-found-download ui button" href="#">Download <span class="documents-found"></span></a>
+                        <a class="ui button" href="javascript: pages.search.showTagOptions();">Tag results</a>
+                        <div id="tag-options" style="padding-top: 20px;">
+                            <div class="ui input labeled">
+                                <label for="tag-type" class="ui label">Type:</label>
+                                <select id="tag-type">
+                                    <option>Person</option>
+                                    <option>Object</option>
+                                    <option>Location</option>
+                                    <option>Date</option>
+                                </select>
+                                <label class="ui label" for="tag-value">Value</label>
+                                <input id="tag-value">
+                            </div>
+                            <div style="text-align: center;">
+                                <a class="ui button primary" href="javascript: pages.search.tagResults();" style="margin: 20px;">Add tag</a>
+                                <a class="ui button red" href="javascript: pages.search.showTagOptions();">Cancel</a>
+                            </div>
                         </div>
-                        <p><a class="documents-found-download" href="#"><span class="documents-found"></span> - click to download</a></p>
                         <table class="ui celled table unstackable">
                             <thead>
                                 <tr>
@@ -160,6 +175,9 @@
                         <div class="return">
                             <a href="javascript: window.history.back(-1);"><i class="ui icon backward"></i>Return to previous page</a>
                         </div>
+                        <div style="float: right;">
+                            <a id="document-download-link" href=""><i class="ui icon download"></i>Download this document</a>
+                        </div>
                     </div>
 
                     <div id="document-view">
@@ -183,33 +201,12 @@
                 </div>
             </div>
 
-            <div class="ui vertical inverted black footer segment" style="position: absolute; bottom: 0;left: 0; width: 100%; min-height: 300px;">
+            <div class="ui vertical inverted black footer segment" style="position: absolute; bottom: 0;left: 0; width: 100%; min-height: 100px;">
                 <div class="container">
                     <div class="ui stackable inverted divided relaxed grid">
                         <div class="eight wide column">
                             <h3 class="ui inverted header">Colenso Project</h3>
-                            <p>Call To action</p>
-                            <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-                                <button type="submit" class="ui pink button">Donate Today</button>
-                            </form>
-                        </div>
-                        <div class="four wide column">
-                            <h5 class="ui pink inverted header">List 1</h5>
-                            <div class="ui inverted link list">
-                                <a class="item" href="#">Item 1</a>
-                                <a class="item" href="#">Item 2</a>
-                                <a class="item" href="#">Item 3</a>
-                                <a class="disabled item">Item 4</a>
-                            </div>
-                        </div>
-                        <div class="four wide column">
-                            <h5 class="ui pink inverted header">List 2</h5>
-                            <div class="ui inverted link list">
-                                <a class="item" href="#">Item 1</a>
-                                <a class="item" href="#">Item 2</a>
-                                <a class="item" href="#">Item 3</a>
-                                <a class="disabled item">Item 4</a>
-                            </div>
+                            <p>&copy; Michael Pearson 2016</p>
                         </div>
                     </div>
                 </div>

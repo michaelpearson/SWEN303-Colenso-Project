@@ -8,6 +8,7 @@ pages.search = {
     queryResultAllId : "",
     nestedSearchElements : [],
     nestedSearchElementHtmlTemplate : '<div class="ui right labeled input action nested-search-container">\n    <div class="search-input">\n        <input type="text" placeholder="Search term">\n    </div>\n    <div class="ui right labeled input action button-container">\n        <div class="ui dropdown label">\n            <div class="text search-type-selector">Simple search</div>\n                <i class="dropdown icon"></i>\n                <div class="menu">\n                <div class="item">Simple search</div>\n                <div class="item">Logical search</div>\n                <div class="item">XQuery search</div>\n            </div>\n        </div>\n    </div>\n</div>',
+    tagOptionsElement : null,
     queryValue : function (nestedIndex, val) {
         var me = pages.search;
         if(nestedIndex === undefined) {
@@ -209,10 +210,14 @@ pages.search = {
         while(me.nestedSearchElements.length > 0) {
             me.removeNestedSearch(true);
         }
+        me.tagOptionsElement = $('#tag-options');
+        me.tagOptionsElement.hide();
         if(pages.search.init) {
             return;
         }
         pages.search.init = true;
+
+        me.tagOptionsElement.find('select').dropdown();
 
         $('#search-nested-add').click(pages.search.addNestedSearch.bind(pages.search));
         $('#search-nested-remove').click(pages.search.removeNestedSearch.bind(pages.search));
@@ -291,5 +296,28 @@ pages.search = {
         } else {
             window.location.hash = newHash;
         }
+    },
+    showTagOptions : function() {
+        var me = pages.search;
+        if(me.tagOptionsElement.css('display') == 'none') {
+            me.tagOptionsElement.show();
+        } else {
+            me.tagOptionsElement.hide();
+        }
+    },
+    tagResults : function () {
+        var me = pages.search;
+        var build = [];
+        for(var a = 0;a < me.documentCache.length;a++) {
+            build.push(me.documentCache[a].id);
+        }
+        var type = me.tagOptionsElement.find('select').val().toLowerCase();
+        var value = me.tagOptionsElement.find('input').val();
+        tagDocuments("test", "test", build, function (result) {
+            if(result.success) {
+                alert("Tagging successful");
+                me.showTagOptions();
+            }
+        });
     }
 };

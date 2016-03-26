@@ -60,6 +60,7 @@ public class SearchDocuments extends HttpServlet {
 
         if(download) {
             response.setHeader("Content-Disposition", "filename=search.zip");
+            response.setHeader("Content-type", "application/zip");
             DocumentZip.writeDocumentToStream(searchResults, response.getOutputStream());
         } else {
             Connection c = Database.getConnection();

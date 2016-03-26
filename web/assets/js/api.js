@@ -72,3 +72,15 @@ function getTopSearches(count, page, callback) {
         }
     });
 }
+
+function tagDocuments(tagType, tagValue, documents, callback) {
+    $.ajax("/api/tagDocuments", {
+        method: "post",
+        data : {
+            ids : documents || [],
+            tagValue : tagValue || "",
+            tagType : tagType || ""
+        },
+        success : callback
+    });
+}
