@@ -2,7 +2,6 @@ package database.sql;
 
 import database.model.TeiDocument;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,7 +11,7 @@ import java.util.Map;
 public class DocumentViewLogger extends EventLogger<TeiDocument> {
 
     @Override
-    protected void logEvent(HttpServletRequest request, TeiDocument document, Connection c, Map<String, Object> extra) {
+    protected void logEvent(int memberToken, TeiDocument document, Connection c, Map<String, Object> extra) {
         if(document == null) {
             return;
         }
@@ -27,7 +26,7 @@ public class DocumentViewLogger extends EventLogger<TeiDocument> {
             statement.setInt(2, eventType.DB_TYPE);
 
             statement.setLong(3, new Date().getTime());
-            statement.setInt(4, extractMemberToken(request.getCookies()));
+            statement.setInt(4, memberToken);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

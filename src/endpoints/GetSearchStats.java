@@ -3,6 +3,8 @@ package endpoints;
 import database.model.Search;
 import database.model.SearchChain;
 import database.sql.Database;
+import database.sql.EventLogger;
+import database.sql.SearchLogger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import util.JsonResponse;
@@ -22,9 +24,25 @@ public class GetSearchStats extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int limit = Integer.parseInt(req.getParameter("count"));
         int offset = limit * (Integer.parseInt(req.getParameter("page")) - 1);
+        int memberId = Integer.parseInt(((req.getParameter("memberid") == null) ? "-1" : req.getParameter("memberid")));
         Connection c = Database.getConnection();
         try {
-            PreparedStatement query = c.prepareStatement("select max(id) as id, count(*) as search_count from SEARCH_CHAIN  group by SEARCH_HASH order by search_count desc limit ? offset ?;");
+            PreparedStatement query;
+            if(memberId == -1) {
+                query = c.prepareStatement("select max(id) as id, count(*) as search_count from SEARCH_CHAIN group by SEARCH_HASH order by search_count desc limit ? offset ?;");
+            } else {
+                if(memberId == 0) {
+                    memberId = EventLogger.extractMemberToken(req.getCookies());
+                }
+                query = c.prepareStatement("select max(id) as id, count(*) as search_count \n" +
+                        "  from SEARCH_CHAIN \n" +
+                        "  where MEMBER_TOKEN = ?3\n" +
+                        "  group by SEARCH_HASH \n" +
+                        "  order by search_count desc \n" +
+                        "  limit ?1 \n" +
+                        "  offset ?2;");
+                query.setInt(3, memberId);
+            }
             query.setInt(1, limit);
             query.setInt(2, offset);
             ResultSet result = query.executeQuery();

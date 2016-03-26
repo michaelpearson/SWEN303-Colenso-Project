@@ -12,15 +12,20 @@ pages.stats = {
         });
         me.initControls();
         me.renderCompleteCallback = renderCompleteCallback;
-        me.getSearches(me.populateResults);
+        me.getSearches(undefined, function (result) {
+            me.populateResults(me.tableElement, result);
+        });
+        me.getSearches(0 , function (result) {
+            me.populateResults($('#my-stat-result-body'), result);
+        });
     },
-    getSearches : function (callback) {
+    getSearches : function (memberId, callback) {
         var me = pages.stats;
-        getTopSearches(me.pageSize, me.page, callback);
+        getTopSearches(me.pageSize, me.page, memberId, callback);
     },
-    populateResults : function (results) {
+    populateResults : function (element, results) {
         var me = pages.stats;
-        me.tableElement.children().remove();
+        element.children().remove();
         results = results || {};
         results.searches = results.searches || [];
         for(var a = 0;a < results.searches.length;a++) {
@@ -41,7 +46,7 @@ pages.stats = {
             var countElement = $("<td>");
             countElement.append("<p>" + search.searchCount + "</p>");
             row.append(queryElement, countElement);
-            me.tableElement.append(row);
+            element.append(row);
         }
         if(me.renderCompleteCallback != null) {
             me.renderCompleteCallback();

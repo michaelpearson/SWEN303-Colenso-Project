@@ -56,7 +56,7 @@ public class SearchDocuments extends HttpServlet {
         int startIndex = page * count;
 
         List<TeiDocument> searchResults = searchChain.executeSearch();
-        new SearchLogger().logEvent(request, searchChain);
+        new SearchLogger().logEvent(request, response, searchChain);
 
         if(download) {
             response.setHeader("Content-Disposition", "filename=search.zip");

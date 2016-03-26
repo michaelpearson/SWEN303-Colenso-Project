@@ -4,6 +4,7 @@ import database.model.Search;
 import database.model.SearchChain;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class SearchLogger extends EventLogger<SearchChain> {
     @Override
-    protected void logEvent(HttpServletRequest request, SearchChain search, Connection c, Map<String, Object> extra) {
+    protected void logEvent(int memberToken, SearchChain search, Connection c, Map<String, Object> extra) {
         if(!(search.results != null && search.searches != null && search.searches.size() > 0)) {
             return;
         }
@@ -20,7 +21,7 @@ public class SearchLogger extends EventLogger<SearchChain> {
             PreparedStatement statement = c.prepareStatement("INSERT INTO SEARCH_CHAIN VALUES(null, ?, ?, ?, ?);", Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, search.results.size());
             statement.setLong(2, new Date().getTime());
-            statement.setInt(3, extractMemberToken(request.getCookies()));
+            statement.setInt(3, memberToken);
             statement.setString(4, generateSearchHash(search));
             statement.executeUpdate();
             ResultSet result = statement.getGeneratedKeys();
