@@ -118,9 +118,14 @@ public class TeiDocument {
         query = String.format(query, getId(), tagType, tagValue, tagType, tagValue);
         BaseXClient client = BaseXClient.getClient();
         BaseXClient.Query result = client.query(query);
-        while(result.more()) {
-            result.next();
+        try {
+            while(result.more()) {
+                result.next();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
         client.close();
     }
 

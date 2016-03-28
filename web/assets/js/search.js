@@ -313,7 +313,7 @@ pages.search = {
         }
         var type = me.tagOptionsElement.find('select').val().toLowerCase();
         var value = me.tagOptionsElement.find('input').val();
-        tagDocuments("test", "test", build, function (result) {
+        tagDocuments(type, value, build, function (result) {
             if(result.success) {
                 alert("Tagging successful");
                 me.showTagOptions();
